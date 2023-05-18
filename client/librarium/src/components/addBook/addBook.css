@@ -23,11 +23,15 @@
 }
 
 .book-id,
-.book-title {
+.book-title,
+.book-author,
+.book-isbn {
   padding: 0.5rem;
 }
 .book-id-input,
-.book-title-input {
+.book-title-input,
+.book-author-input,
+.book-isbn-input {
   padding: 0.5rem;
 }
 

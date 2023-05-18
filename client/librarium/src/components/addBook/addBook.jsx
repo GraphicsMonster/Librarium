@@ -22,6 +22,20 @@ const AddBook = () =>  {
                     <input type='text' id='book-title' name='book-title' placeholder='Enter Book Title' />
                 </div>
             </div>
+            <div className='row'>
+                <div className='col-25 book-author'>Book Author</div>   
+                <div className='col-75 book-author-input'>
+                    <input type='text' id='book-author' name='book-author' placeholder='Enter Book Author' />
+                </div>
+            </div>
+
+            <div className='row'>
+                <div className='col-25 book-isbn'>ISBN</div>   
+                <div className='col-75 book-isbn-input'>
+                    <input type='text' id='book-isbn' name='book-isbn' placeholder='Enter Book isbn' />
+                </div>
+            </div>
+
             <div className='submit-button'>
                 <button onClick={onSubmit} type='submit'id='addBook-form' className='submit-btn'>Check records and add</button>
             </div>
@@ -37,6 +51,8 @@ const onSubmit = () => {
 
           const book_id = document.getElementById("book-id").value;
           const book_title = document.getElementById("book-title").value;
+          const book_author = document.getElementById("book-author").value;
+          const isbn = document.getElementById("isbn").value;
 
           data = {book_id, book_title};
       })
