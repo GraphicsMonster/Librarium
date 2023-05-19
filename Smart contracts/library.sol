@@ -31,5 +31,7 @@ contract Library {
 
         bookBalance[msg.sender]++;
         booksIssued[msg.sender][_bookId] = block.timestamp;
+
+        emit bookBorrowed(msg.sender, _bookId);
     }
 }
