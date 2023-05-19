@@ -16,11 +16,24 @@ contract user {
     event userRegistered(address indexed _user, string _name, string _email);
 
     constructor(address _userAddress) {
+        require(
+            !userExists(_userAddress),
+            "User with this address already exists"
+        );
+
         UserAddress = _userAddress;
     }
 
     function registerUser(string memory _name, string memory _email) public {
         users[msg.sender] = User(_name, _email, 0, new uint256[](0));
         emit userRegistered(msg.sender, _name, _email);
+    }
+
+    function userExists(address _userAddress) public view returns (bool) {
+        if (bytes(users[_userAddress].name).length > 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
