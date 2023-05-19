@@ -10,6 +10,7 @@ contract bookToken {
     }
 
     mapping(uint256 => Book) public books;
+    // This gives birth to the idea behind a unique bookId for each book which is essentially the order in which each book was registered in the library's systems.
     uint256 public totalBooks;
 
     function addBook(

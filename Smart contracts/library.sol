@@ -13,7 +13,7 @@ contract Library {
     }
 
     mapping(address => uint256) public bookBalance;
-    mapping(address => mapping(uint256 => uint256)) public booksIssued;
+    mapping(address => mapping(uint256 => bool)) public booksIssued;
 
     event bookBorrowed(address indexed _borrower, uint256 indexed _bookId);
     event bookReturned(address indexed _borrower, uint256 indexed _bookId);
@@ -25,13 +25,42 @@ contract Library {
         );
 
         require(
-            booksIssued[msg.sender][_bookId] == 0,
+            booksIssued[msg.sender][_bookId] == false,
             "Book has already been issued by you"
         );
 
         bookBalance[msg.sender]++;
-        booksIssued[msg.sender][_bookId] = block.timestamp;
+        booksIssued[msg.sender][_bookId] = true;
 
         emit bookBorrowed(msg.sender, _bookId);
     }
+
+    function returnBook(uint256 _bookId) public {
+        require(
+            booksIssued[msg.sender][_bookId] == true,
+            "Book has not been issued by you"
+        );
+
+        bookBalance[msg.sender]--;
+        booksIssued[msg.sender][_bookId] = false;
+
+        emit bookReturned(msg.sender, _bookId);
+    }
+
+    function getBorrwedBooks() public view returns (uint256[] memory) {
+        uint256[] memory bookIds = new uint256[](bookBalance[msg.sender]);
+        uint256 count = 0;
+
+        for (uint256 i = 1; i <= bookTokenContract.totalBooks(); i++) {
+            if (booksIssued[msg.sender][i] == true) {
+                bookIds[count] = i;
+                count++;
+            }
+        }
+
+        return bookIds;
+    }
+
+    // The booksIssued mapping can only take boolean values for whether the user already holds a particular copy of the title.
+    // This functionality is used in bookBorrow, bookReturned and getBorrowedBooks functions.
 }
