@@ -9,6 +9,24 @@ contract bookToken {
         string isbn;
     }
 
-    mapping(string => Book) books;
+    mapping(uint256 => Book) books;
     uint256 public totalBooks;
+
+    function addBook(
+        string memory _title,
+        string memory _author,
+        uint256 _copies,
+        string memory _isbn
+    ) public {
+        books[totalBooks + 1] = Book(_title, _author, _copies, _isbn);
+        totalBooks++;
+    }
+
+    function getBookDetails(uint256 _bookId) public view returns (Book memory) {
+        if (_bookId > totalBooks || _bookId < 0 || totalBooks == 0) {
+            revert("Book does not exist");
+        } else {
+            return books[_bookId];
+        }
+    }
 }
