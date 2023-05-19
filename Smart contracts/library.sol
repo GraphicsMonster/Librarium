@@ -2,6 +2,7 @@
 pragma solidity >=0.4.16 <0.9.0;
 
 import "./bookToken.sol";
+import "./user.sol";
 
 contract Library {
     address private bookTokenAddress;
@@ -17,6 +18,11 @@ contract Library {
 
     event bookBorrowed(address indexed _borrower, uint256 indexed _bookId);
     event bookReturned(address indexed _borrower, uint256 indexed _bookId);
+
+    function registerUser(string memory name, string memory email) public {
+        user userContract = user(msg.sender);
+        userContract.registerUser(name, email);
+    }
 
     function bookBorrow(uint256 _bookId) public {
         require(
