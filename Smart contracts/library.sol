@@ -23,5 +23,13 @@ contract Library {
             bookTokenContract.getBookCopies(_bookId) > 0,
             "Book does not exist"
         );
+
+        require(
+            booksIssued[msg.sender][_bookId] == 0,
+            "Book has already been issued by you"
+        );
+
+        bookBalance[msg.sender]++;
+        booksIssued[msg.sender][_bookId] = block.timestamp;
     }
 }
