@@ -5,7 +5,7 @@ import "./bookToken.sol";
 
 contract Library {
     address private bookTokenAddress;
-    bookToken private bookTokenContract;
+    bookToken public bookTokenContract;
 
     constructor(address _bookTokenAddress) {
         bookTokenAddress = _bookTokenAddress;
@@ -17,4 +17,11 @@ contract Library {
 
     event bookBorrowed(address indexed _borrower, uint256 indexed _bookId);
     event bookReturned(address indexed _borrower, uint256 indexed _bookId);
+
+    function bookBorrow(uint256 _bookId) public {
+        require(
+            bookTokenContract.getBookCopies(_bookId) > 0,
+            "Book does not exist"
+        );
+    }
 }
