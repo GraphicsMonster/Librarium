@@ -1,6 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Martian+Mono&display=swap");
-
-.addBook {
+.loginForm {
   width: 50vw;
   margin: 1rem auto;
   padding: 1rem;
@@ -9,12 +7,14 @@
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
   font-family: "Martian Mono", monospace;
 }
+
 .row {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
 }
+
 @media (max-width: 768px) {
   .row {
     flex-direction: column;
@@ -22,16 +22,13 @@
   }
 }
 
-.book-id,
-.book-title,
-.book-author,
-.book-isbn {
+.username,
+.password {
   padding: 0.5rem;
 }
-.book-id-input,
-.book-title-input,
-.book-author-input,
-.book-isbn-input {
+
+.username-input,
+.password-input {
   padding: 0.5rem;
 }
 
