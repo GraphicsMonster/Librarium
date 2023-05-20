@@ -38,4 +38,16 @@ contract bookToken {
             return books[_bookId].copies;
         }
     }
+
+    function isBookAvailable(uint256 _bookId) public view returns (bool) {
+        if (_bookId > totalBooks || _bookId < totalBooks || totalBooks == 0) {
+            revert("Book does not exist");
+        } else {
+            if (books[_bookId].copies > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
 }
