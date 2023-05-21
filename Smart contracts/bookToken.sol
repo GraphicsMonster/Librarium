@@ -29,6 +29,11 @@ contract bookToken {
         } else {
             return books[_bookId];
         }
+
+        // Testing has led me to find out that this function returns not a struct but a string array of the struct's values.
+        // To optimize for usage, we can convert the returned array's required values into string and then parse it into whatever type we want.
+        // This is done in the bookToken.test.js file
+        // I will leave this here for reference purposes.
     }
 
     function getBookCopies(uint256 _bookId) public view returns (uint256) {
