@@ -20,7 +20,7 @@ contract Library {
     event bookReturned(address indexed _borrower, uint256 indexed _bookId);
 
     function registerUser(string memory name, string memory email) public {
-        user userContract = user(msg.sender);
+        user userContract = new user(msg.sender, name, email);
         userContract.registerUser(name, email);
     }
 
