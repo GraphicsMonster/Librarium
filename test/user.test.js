@@ -23,7 +23,9 @@ contract('user', (accounts) => {
  
     it('Should be able to add a user', async () => {
 
-        const userToken = UserInstance.users[0xa0daa9c951e695deea607a98376a83e7c3a23a14];
+        const userAddress = "0xa0daa9c951e695deea607a98376a83e7c3a23a14";
+
+        const userToken = await UserInstance.users.call(userAddress);
 
 
         const result = {
