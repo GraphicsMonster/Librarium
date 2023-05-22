@@ -6,7 +6,9 @@ import "./user.sol";
 
 contract Library {
     address private bookTokenAddress;
+    //The purpose of bookTokenAddress is to store the address of the bookToken contract.
     bookToken public bookTokenContract;
+    user userContract = new user(msg.sender, "name", "email");
 
     constructor(address _bookTokenAddress) {
         bookTokenAddress = _bookTokenAddress;
@@ -19,9 +21,18 @@ contract Library {
     event bookBorrowed(address indexed _borrower, uint256 indexed _bookId);
     event bookReturned(address indexed _borrower, uint256 indexed _bookId);
 
-    function registerUser(string memory name, string memory email) public {
-        user userContract = new user(msg.sender, name, email);
-        userContract.registerUser(name, email);
+    function registerUser(
+        address _userAddress,
+        string memory name,
+        string memory email
+    ) public {
+        userContract.registerUser(_userAddress, name, email);
+    }
+
+    function getUserDetails(
+        address _userAddress
+    ) public view returns (user.User memory) {
+        return userContract.getUser(_userAddress);
     }
 
     function bookBorrow(uint256 _bookId) public {
