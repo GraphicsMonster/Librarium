@@ -6,13 +6,18 @@ import "./user.sol";
 
 contract Library {
     address private bookTokenAddress;
+    address private userAddress;
     //The purpose of bookTokenAddress is to store the address of the bookToken contract.
     bookToken public bookTokenContract;
-    user userContract = new user(msg.sender, "name", "email");
+    user public userContract;
 
-    constructor(address _bookTokenAddress) {
+    constructor(address _bookTokenAddress, address _userAddress) {
         bookTokenAddress = _bookTokenAddress;
         bookTokenContract = bookToken(bookTokenAddress);
+        // This is how we can access the functions of the bookToken contract.
+        userAddress = _userAddress;
+        userContract = user(_userAddress);
+        // This is how we can access the functions of the user contract.
     }
 
     mapping(address => uint256) public bookBalance;
