@@ -39,7 +39,7 @@ contract user {
         string memory _email
     ) public {
         require(
-            !userExists(msg.sender),
+            !userExists(_userAddress),
             "User with this address already exists"
         );
         emit userRegistered(_userAddress, _name, _email);
