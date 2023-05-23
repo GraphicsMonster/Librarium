@@ -29,12 +29,20 @@ contract user {
         users[_userAddress] = User(_name, _email, 0, new uint256[](0));
     }
 
-    function registerUser(string memory _name, string memory _email) public {
+    function getUser(address _userAddress) public view returns (User memory) {
+        return users[_userAddress];
+    }
+
+    function registerUser(
+        address _userAddress,
+        string memory _name,
+        string memory _email
+    ) public {
         require(
             !userExists(msg.sender),
             "User with this address already exists"
         );
-        emit userRegistered(msg.sender, _name, _email);
+        emit userRegistered(_userAddress, _name, _email);
     }
 
     function userExists(address _userAddress) public view returns (bool) {

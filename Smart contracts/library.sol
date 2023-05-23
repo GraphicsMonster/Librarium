@@ -1,72 +1,55 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.4.16 <0.9.0;
 
-import "./bookToken.sol";
-import "./user.sol";
+contract user {
+    address public UserAddress;
 
-contract Library {
-    address private bookTokenAddress;
-    bookToken public bookTokenContract;
-
-    constructor(address _bookTokenAddress) {
-        bookTokenAddress = _bookTokenAddress;
-        bookTokenContract = bookToken(bookTokenAddress);
+    struct User {
+        string name;
+        string email;
+        uint256 bookBalance;
+        uint256[] borrowedBooks;
     }
 
-    mapping(address => uint256) public bookBalance;
-    mapping(address => mapping(uint256 => bool)) public booksIssued;
+    mapping(address => User) public users;
 
-    event bookBorrowed(address indexed _borrower, uint256 indexed _bookId);
-    event bookReturned(address indexed _borrower, uint256 indexed _bookId);
+    event userRegistered(address indexed _user, string _name, string _email);
 
-    function registerUser(string memory name, string memory email) public {
-        user userContract = new user(msg.sender, name, email);
-        userContract.registerUser(name, email);
-    }
-
-    function bookBorrow(uint256 _bookId) public {
+    constructor(
+        address _userAddress,
+        string memory _name,
+        string memory _email
+    ) {
         require(
-            bookTokenContract.getBookCopies(_bookId) > 0,
-            "Book does not exist"
+            !userExists(_userAddress),
+            "User with this address already exists"
         );
 
-        require(
-            booksIssued[msg.sender][_bookId] == false,
-            "Book has already been issued by you"
-        );
-
-        bookBalance[msg.sender]++;
-        booksIssued[msg.sender][_bookId] = true;
-
-        emit bookBorrowed(msg.sender, _bookId);
+        UserAddress = _userAddress;
+        users[_userAddress] = User(_name, _email, 0, new uint256[](0));
     }
 
-    function returnBook(uint256 _bookId) public {
-        require(
-            booksIssued[msg.sender][_bookId] == true,
-            "Book has not been issued by you"
-        );
-
-        bookBalance[msg.sender]--;
-        booksIssued[msg.sender][_bookId] = false;
-
-        emit bookReturned(msg.sender, _bookId);
+    function getUser(address _userAddress) public view returns (User memory) {
+        return users[_userAddress];
     }
 
-    function getBorrwedBooks() public view returns (uint256[] memory) {
-        uint256[] memory bookIds = new uint256[](bookBalance[msg.sender]);
-        uint256 count = 0;
+    function registerUser(
+        address _userAddress,
+        string memory _name,
+        string memory _email
+    ) public {
+        require(
+            !userExists(msg.sender),
+            "User with this address already exists"
+        );
+        emit userRegistered(_userAddress, _name, _email);
+    }
 
-        for (uint256 i = 1; i <= bookTokenContract.totalBooks(); i++) {
-            if (booksIssued[msg.sender][i] == true) {
-                bookIds[count] = i;
-                count++;
-            }
+    function userExists(address _userAddress) public view returns (bool) {
+        if (bytes(users[_userAddress].name).length > 0) {
+            return true;
+        } else {
+            return false;
         }
-
-        return bookIds;
     }
-
-    // The booksIssued mapping can only take boolean values for whether the user already holds a particular copy of the title.
-    // This functionality is used in bookBorrow, bookReturned and getBorrowedBooks functions.
 }
