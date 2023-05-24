@@ -47,6 +47,19 @@ contract bookToken {
         }
     }
 
+    function getBookId(string memory _isbn) public view returns (uint256) {
+        for (uint256 i = 0; i < totalBooks; i++) {
+            if (
+                keccak256(abi.encodePacked(books[i].isbn)) ==
+                keccak256(abi.encodePacked(_isbn))
+            ) {
+                return i;
+            } else {
+                revert("Book does not exist");
+            }
+        }
+    }
+
     function addCopies(uint256 _bookId, uint256 _copies) public {
         if (_bookId > totalBooks || _bookId < 0 || totalBooks == 0) {
             revert("Book does not exist");

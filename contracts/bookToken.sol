@@ -51,8 +51,6 @@ contract bookToken {
                 keccak256(abi.encodePacked(_isbn))
             ) {
                 return i;
-            } else {
-                revert("Book does not exist");
             }
         }
     }

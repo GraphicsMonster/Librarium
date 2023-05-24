@@ -40,4 +40,26 @@ contract('Library', async () => {
         // Check if the user details are correct
         // works now. Great!
     })
+
+    it('Should be able to borrow books for a user', async () => {
+
+        const BookToken = await bookToken.new();
+        
+        await BookToken.addBook("Harry Potter", "J.K. Rowling", "1234567890", "3");
+        await BookToken.addBook("Shogun", "James Clavell", "1234567891", "1");
+        await BookToken.addBook("The Lord of the Rings", "J.R.R. Tolkien", "1234567892", "2");
+        // Add new books to the library
+
+        const shogun_book_id = BookToken.getBookId.call("1234567890");
+        const harry_potter_book_id = BookToken.getBookId("1234567891");
+        const lotr_book_id = BookToken.getBookId("1234567892");
+        // Get the book ids of the books added to the library
+
+        await LibraryInstance.bookBorrow(shogun_book_id);
+        await LibraryInstance.bookBorrow(harry_potter_book_id);
+        await LibraryInstance.bookBorrow(lotr_book_id);
+
+        assert.equal(LibraryInstance.bookBalance["0xb28c9ade2882319974aaa9e860cd5633febcc4cc"], 3,  "Book balance is not correct");
+
+    })
 })
