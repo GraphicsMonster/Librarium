@@ -53,6 +53,8 @@ contract bookToken {
                 return i;
             }
         }
+
+        return 0;
     }
 
     function addCopies(uint256 _bookId, uint256 _copies) public {

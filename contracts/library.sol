@@ -51,7 +51,7 @@ contract Library {
 
     function bookBorrow(uint256 _bookId) public {
         require(
-            bookTokenContract.getBookCopies(_bookId) > 0,
+            bookTokenContract.isBookAvailable(_bookId),
             "Book does not exist"
         );
 
@@ -60,7 +60,7 @@ contract Library {
             "Book has already been issued by you"
         );
 
-        bookBalance[msg.sender]++;
+        bookBalance[msg.sender] += 1;
         booksIssued[msg.sender][_bookId] = true;
 
         emit bookBorrowed(msg.sender, _bookId);
@@ -72,7 +72,7 @@ contract Library {
             "Book has not been issued by you"
         );
 
-        bookBalance[msg.sender]--;
+        bookBalance[msg.sender] -= 1;
         booksIssued[msg.sender][_bookId] = false;
 
         emit bookReturned(msg.sender, _bookId);

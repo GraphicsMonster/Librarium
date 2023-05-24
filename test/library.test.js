@@ -1,20 +1,29 @@
 const bookToken = artifacts.require('bookToken');
 const Library = artifacts.require('library');
 const user = artifacts.require('user');
+const {BigNumber} = require('bignumber.js');
 
 contract('Library', async () => {
 
     let LibraryInstance;
+    let BookToken;
+    let userInstance;
 
     beforeEach(async () => {
-        const BookToken = await bookToken.new();
+        BookToken = await bookToken.new();
         // Deploy bookToken contract first
 
-        const userInstance = await user.new("0xb28c9ade2882319974aaa9e860cd5633febcc4cc", "Devansh", "dgupta0069@gmail.com");
+        userInstance = await user.new("0xb28c9ade2882319974aaa9e860cd5633febcc4cc", "Devansh", "dgupta0069@gmail.com");
         // Deploy user contract
 
         LibraryInstance = await Library.new(BookToken.address, userInstance.address);
         // Deploy Library contract with bookToken contract address as parameter
+        
+        await BookToken.addBook("Harry Potter", "J.K. Rowling", "1234567890", "3");
+        await BookToken.addBook("Shogun", "James Clavell", "1234567891", "1");
+        await BookToken.addBook("The Lord of the Rings", "J.R.R. Tolkien", "1234567892", "2");
+        // Add new books to the library
+
     })
 
     it('Should be able to fetch user details(Through library contract)', async () => {
@@ -43,23 +52,24 @@ contract('Library', async () => {
 
     it('Should be able to borrow books for a user', async () => {
 
-        const BookToken = await bookToken.new();
-        
-        await BookToken.addBook("Harry Potter", "J.K. Rowling", "1234567890", "3");
-        await BookToken.addBook("Shogun", "James Clavell", "1234567891", "1");
-        await BookToken.addBook("The Lord of the Rings", "J.R.R. Tolkien", "1234567892", "2");
-        // Add new books to the library
-
-        const shogun_book_id = BookToken.getBookId.call("1234567890");
-        const harry_potter_book_id = BookToken.getBookId("1234567891");
-        const lotr_book_id = BookToken.getBookId("1234567892");
+        let shogun_book_id = new BigNumber(BookToken.getBookId("1234567890"));
+        let harry_potter_book_id = new BigNumber(BookToken.getBookId("1234567891"));
+        let lotr_book_id = new BigNumber(BookToken.getBookId("1234567892"));
         // Get the book ids of the books added to the library
 
-        await LibraryInstance.bookBorrow(shogun_book_id);
-        await LibraryInstance.bookBorrow(harry_potter_book_id);
-        await LibraryInstance.bookBorrow(lotr_book_id);
+
+        await LibraryInstance.bookBorrow(shogun_book_id.toNumber());
+        await LibraryInstance.bookBorrow(harry_potter_book_id.toNumber());
+        await LibraryInstance.bookBorrow(lotr_book_id.toNumber());
 
         assert.equal(LibraryInstance.bookBalance["0xb28c9ade2882319974aaa9e860cd5633febcc4cc"], 3,  "Book balance is not correct");
 
+        // The test fails again. Something is not right with the bookBorrow function. Will fix it tonight.
+
     })
+
+     it('Testing the addCopies function', async () => {
+    
+
+     })
 })
