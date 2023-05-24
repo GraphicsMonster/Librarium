@@ -44,6 +44,14 @@ contract bookToken {
         }
     }
 
+    function addCopies(uint256 _bookId, uint256 _copies) public {
+        if (_bookId > totalBooks || _bookId < 0 || totalBooks == 0) {
+            revert("Book does not exist");
+        } else {
+            books[_bookId].copies += _copies;
+        }
+    }
+
     function isBookAvailable(uint256 _bookId) public view returns (bool) {
         if (_bookId > totalBooks || _bookId < totalBooks || totalBooks == 0) {
             revert("Book does not exist");

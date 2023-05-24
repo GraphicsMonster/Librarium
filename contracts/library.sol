@@ -40,6 +40,15 @@ contract Library {
         return userContract.getUser(_userAddress);
     }
 
+    function addCopies(uint256 _bookId, uint256 _copies) public {
+        require(
+            bookTokenContract.isBookAvailable(_bookId),
+            "Add the book first"
+        );
+
+        bookTokenContract.addCopies(_bookId, _copies);
+    }
+
     function bookBorrow(uint256 _bookId) public {
         require(
             bookTokenContract.getBookCopies(_bookId) > 0,
