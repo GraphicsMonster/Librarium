@@ -43,6 +43,9 @@ contract user {
             "User with this address already exists"
         );
         emit userRegistered(_userAddress, _name, _email);
+        users[_userAddress] = User(_name, _email, 0, new uint256[](0));
+
+        // The user is registered through the constructor primarily, but this function makes it easier to register users through other contracts.
     }
 
     function userExists(address _userAddress) public view returns (bool) {

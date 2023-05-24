@@ -37,5 +37,7 @@ contract('Library', async () => {
         // Fetch the user details of the newly registered user
         assert.equal(userDetails.name, "Test", "User name is not correct");
         assert.equal(userDetails.email, "dgupta0069@gmail.com", "User email is not correct");
+        // Check if the user details are correct
+        // works now. Great!
     })
 })
