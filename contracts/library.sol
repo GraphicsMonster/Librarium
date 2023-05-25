@@ -78,12 +78,14 @@ contract Library {
         emit bookReturned(msg.sender, _bookId);
     }
 
-    function getBorrwedBooks() public view returns (uint256[] memory) {
-        uint256[] memory bookIds = new uint256[](bookBalance[msg.sender]);
+    function getBorrowedBooks(
+        address _address
+    ) public view returns (uint256[] memory) {
+        uint256[] memory bookIds = new uint256[](bookBalance[_address]);
         uint256 count = 0;
 
         for (uint256 i = 1; i <= bookTokenContract.totalBooks(); i++) {
-            if (booksIssued[msg.sender][i] == true) {
+            if (booksIssued[_address][i] == true) {
                 bookIds[count] = i;
                 count++;
             }
