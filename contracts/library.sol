@@ -49,21 +49,21 @@ contract Library {
         bookTokenContract.addCopies(_bookId, _copies);
     }
 
-    function bookBorrow(uint256 _bookId) public {
+    function bookBorrow(address _userAddress, uint256 _bookId) public {
         require(
             bookTokenContract.isBookAvailable(_bookId),
             "Book does not exist"
         );
 
         require(
-            booksIssued[msg.sender][_bookId] == false,
+            booksIssued[_userAddress][_bookId] == false,
             "Book has already been issued by you"
         );
 
-        bookBalance[msg.sender] += 1;
-        booksIssued[msg.sender][_bookId] = true;
+        bookBalance[_userAddress] += 1;
+        booksIssued[_userAddress][_bookId] = true;
 
-        emit bookBorrowed(msg.sender, _bookId);
+        emit bookBorrowed(_userAddress, _bookId);
     }
 
     function returnBook(uint256 _bookId) public {

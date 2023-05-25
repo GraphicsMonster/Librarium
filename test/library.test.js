@@ -61,14 +61,17 @@ contract('Library', async () => {
         // Get the book ids of the books added to the library
 
 
-        await LibraryInstance.bookBorrow(shogun_book_id.toNumber());
-        await LibraryInstance.bookBorrow(harry_potter_book_id.toNumber());
-        await LibraryInstance.bookBorrow(lotr_book_id.toNumber());
+        await LibraryInstance.bookBorrow("0xb28c9ade2882319974aaa9e860cd5633febcc4cc", shogun_book_id.toNumber());
+        await LibraryInstance.bookBorrow("0xb28c9ade2882319974aaa9e860cd5633febcc4cc", harry_potter_book_id.toNumber());
+        await LibraryInstance.bookBorrow("0xb28c9ade2882319974aaa9e860cd5633febcc4cc", lotr_book_id.toNumber());
+
+        console.log(await LibraryInstance.getUserDetails("0xb28c9ade2882319974aaa9e860cd5633febcc4cc"));
+        // Shouldn't return undefined. But it does.
 
         assert.equal(LibraryInstance.bookBalance["0xb28c9ade2882319974aaa9e860cd5633febcc4cc"], 3, "Book balance is not correct");
 
         // The test fails again. Something is not right with the bookBorrow function. Will fix it tonight.
-        // More testing has revealed that something is not right with the getBookId function.
+        // More testing has revealed that something is not right with the getBookId function. [FIXED]
         // Everything was almost alright. I just had to add the await keyword before the function call.
 
     })
@@ -80,9 +83,15 @@ contract('Library', async () => {
 
     it('Checking to see if correct IDs are being assigned to the books', async () => {
         const Ids = await LibraryInstance.getBorrowedBooks("0xb28c9ade2882319974aaa9e860cd5633febcc4cc");
-        console.log(userInstance.address);
+        console.log(await userInstance.UserAddress.call());
         console.log(Ids);
-        // Okay so it appears that the IDs aren't being assigned to the given address but to the address of the library contract itself.
-        // This will be fixed tomorrow.
+        console.log(await BookToken.isBookAvailable(2));
+    })
+
+    it("Checking if the getBorrowedBooks function works", async () => {
+        const Ids = await LibraryInstance.getBorrowedBooks("0xb28c9ade2882319974aaa9e860cd5633febcc4cc");
+        console.log(Ids);
+
+        assert.equal(Ids, [1, 2, 3], "Book IDs is not correct");
     })
 })
