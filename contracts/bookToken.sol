@@ -81,7 +81,8 @@ contract bookToken {
     }
 
     function isBookAvailable(uint256 _bookId) public view returns (bool) {
-        if (_bookId > totalBooks || _bookId < totalBooks || totalBooks == 0) {
+        if (_bookId > totalBooks || totalBooks == 0) {
+            // removed the condition _bookId < 0 because it's redundant
             revert("Book does not exist");
         } else {
             if (books[_bookId].copies > 0) {
