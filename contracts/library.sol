@@ -21,6 +21,13 @@ contract Library {
     }
 
     mapping(address => uint256) public bookBalance;
+
+    function getbookBalance(
+        address _userAddress
+    ) public view returns (uint256) {
+        return bookBalance[_userAddress];
+    }
+
     mapping(address => mapping(uint256 => bool)) public booksIssued;
 
     event bookBorrowed(address indexed _borrower, uint256 indexed _bookId);
@@ -60,7 +67,12 @@ contract Library {
             "Book has already been issued by you"
         );
 
-        bookBalance[_userAddress] += 1;
+        if (bookBalance[_userAddress] == 0) {
+            bookBalance[_userAddress] = 1;
+        } else {
+            bookBalance[_userAddress] += 1;
+        }
+
         booksIssued[_userAddress][_bookId] = true;
 
         emit bookBorrowed(_userAddress, _bookId);

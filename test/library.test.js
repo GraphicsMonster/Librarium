@@ -68,7 +68,10 @@ contract('Library', async () => {
         console.log(await LibraryInstance.getUserDetails("0xb28c9ade2882319974aaa9e860cd5633febcc4cc"));
         // Shouldn't return undefined. But it does.
 
-        assert.equal(LibraryInstance.bookBalance["0xb28c9ade2882319974aaa9e860cd5633febcc4cc"], 3, "Book balance is not correct");
+        const bookBalance = await LibraryInstance.getbookBalance("0xb28c9ade2882319974aaa9e860cd5633febcc4cc");
+
+        assert.equal(bookBalance, 3, "Book balance is not correct");
+        // Hell yeah baby this works now. Great!
 
         // The test fails again. Something is not right with the bookBorrow function. Will fix it tonight.
         // More testing has revealed that something is not right with the getBookId function. [FIXED]
