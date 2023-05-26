@@ -69,13 +69,15 @@ contract('Library', async () => {
         // Shouldn't return undefined. But it does.
 
         const bookBalance = await LibraryInstance.getbookBalance("0xb28c9ade2882319974aaa9e860cd5633febcc4cc");
-
         assert.equal(bookBalance, 3, "Book balance is not correct");
         // Hell yeah baby this works now. Great!
 
-        // The test fails again. Something is not right with the bookBorrow function. Will fix it tonight.
+        // The test fails again. Something is not right with the bookBorrow function. Will fix it tonight. [ FIXED ]
         // More testing has revealed that something is not right with the getBookId function. [FIXED]
         // Everything was almost alright. I just had to add the await keyword before the function call.
+        // The test fails again. Something is not right with the bookBorrow function. Will fix it tonight. [ FIXED ]
+
+        // The reason the test was failing was because you can't access bookBalance directly. You have to define and use a getter function.
 
     })
 

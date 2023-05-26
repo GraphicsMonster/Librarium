@@ -30,7 +30,11 @@ contract Library {
 
     mapping(address => mapping(uint256 => bool)) public booksIssued;
 
-    event bookBorrowed(address indexed _borrower, uint256 indexed _bookId);
+    event bookBorrowed(
+        address indexed _borrower,
+        uint256 indexed _bookId,
+        uint256 _bookBalance
+    );
     event bookReturned(address indexed _borrower, uint256 indexed _bookId);
 
     function registerUser(
@@ -45,6 +49,10 @@ contract Library {
         address _userAddress
     ) public view returns (user.User memory) {
         return userContract.getUser(_userAddress);
+    }
+
+    function updateUserBalance(address _userAddress, uint256 _balance) public {
+        userContract.setUserBalance(_userAddress, _balance);
     }
 
     function addCopies(uint256 _bookId, uint256 _copies) public {
@@ -74,8 +82,9 @@ contract Library {
         }
 
         booksIssued[_userAddress][_bookId] = true;
+        userContract.setUserBalance(_userAddress, bookBalance[_userAddress]);
 
-        emit bookBorrowed(_userAddress, _bookId);
+        emit bookBorrowed(_userAddress, _bookId, bookBalance[_userAddress]);
     }
 
     function returnBook(uint256 _bookId) public {

@@ -29,6 +29,16 @@ contract user {
         users[_userAddress] = User(_name, _email, 0, new uint256[](0));
     }
 
+    function setUserBalance(address _userAddress, uint256 _balance) public {
+        users[_userAddress].bookBalance = _balance;
+    }
+
+    function getUserBalance(
+        address _userAddress
+    ) public view returns (uint256) {
+        return users[_userAddress].bookBalance;
+    }
+
     function getUser(address _userAddress) public view returns (User memory) {
         return users[_userAddress];
     }
