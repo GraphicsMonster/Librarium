@@ -7,23 +7,44 @@ import "./user.sol";
 contract Library {
     address private bookTokenAddress;
     address private userAddress;
-    //The purpose of bookTokenAddress is to store the address of the bookToken contract.
+    // bookTokenAddress is to store the address of the bookToken contract.
     bookToken public bookTokenContract;
     user public userContract;
 
-    constructor(address _bookTokenAddress, address _userAddress) {
+    uint256 maxHolds;
+
+    // Maximum number of hold the library allows a user to have at a time.
+
+    constructor(
+        address _bookTokenAddress,
+        address _userAddress,
+        uint256 _maxHolds
+    ) {
         bookTokenAddress = _bookTokenAddress;
         bookTokenContract = bookToken(bookTokenAddress);
         // This is how we can access the functions of the bookToken contract.
         userAddress = _userAddress;
         userContract = user(_userAddress);
         // This is how we can access the functions of the user contract.
+
+        maxHolds = _maxHolds;
     }
 
     mapping(address => uint256) public bookBalance;
+
+    function getbookBalance(
+        address _userAddress
+    ) public view returns (uint256) {
+        return bookBalance[_userAddress];
+    }
+
     mapping(address => mapping(uint256 => bool)) public booksIssued;
 
-    event bookBorrowed(address indexed _borrower, uint256 indexed _bookId);
+    event bookBorrowed(
+        address indexed _borrower,
+        uint256 indexed _bookId,
+        uint256 _bookBalance
+    );
     event bookReturned(address indexed _borrower, uint256 indexed _bookId);
 
     function registerUser(
@@ -40,6 +61,10 @@ contract Library {
         return userContract.getUser(_userAddress);
     }
 
+    function updateUserBalance(address _userAddress, uint256 _balance) public {
+        userContract.setUserBalance(_userAddress, _balance);
+    }
+
     function addCopies(uint256 _bookId, uint256 _copies) public {
         require(
             bookTokenContract.isBookAvailable(_bookId),
@@ -49,21 +74,27 @@ contract Library {
         bookTokenContract.addCopies(_bookId, _copies);
     }
 
-    function bookBorrow(uint256 _bookId) public {
+    function bookBorrow(address _userAddress, uint256 _bookId) public {
         require(
             bookTokenContract.isBookAvailable(_bookId),
             "Book does not exist"
         );
 
         require(
-            booksIssued[msg.sender][_bookId] == false,
+            booksIssued[_userAddress][_bookId] == false,
             "Book has already been issued by you"
         );
 
-        bookBalance[msg.sender] += 1;
-        booksIssued[msg.sender][_bookId] = true;
+        if (bookBalance[_userAddress] == 0) {
+            bookBalance[_userAddress] = 1;
+        } else {
+            bookBalance[_userAddress] += 1;
+        }
 
-        emit bookBorrowed(msg.sender, _bookId);
+        booksIssued[_userAddress][_bookId] = true;
+        userContract.setUserBalance(_userAddress, bookBalance[_userAddress]);
+
+        emit bookBorrowed(_userAddress, _bookId, bookBalance[_userAddress]);
     }
 
     function returnBook(uint256 _bookId) public {
@@ -81,7 +112,7 @@ contract Library {
     function getBorrowedBooks(
         address _address
     ) public view returns (uint256[] memory) {
-        uint256[] memory bookIds = new uint256[](bookBalance[_address]);
+        uint256[] memory bookIds = new uint256[](maxHolds);
         uint256 count = 0;
 
         for (uint256 i = 1; i <= bookTokenContract.totalBooks(); i++) {

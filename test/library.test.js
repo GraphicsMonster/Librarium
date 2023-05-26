@@ -8,6 +8,7 @@ contract('Library', async () => {
     let LibraryInstance;
     let BookToken;
     let userInstance;
+    let maxHolds = 10;
 
     beforeEach(async () => {
         BookToken = await bookToken.new();
@@ -16,7 +17,7 @@ contract('Library', async () => {
         userInstance = await user.new("0xb28c9ade2882319974aaa9e860cd5633febcc4cc", "Devansh", "dgupta0069@gmail.com");
         // Deploy user contract
 
-        LibraryInstance = await Library.new(BookToken.address, userInstance.address);
+        LibraryInstance = await Library.new(BookToken.address, userInstance.address, maxHolds);
         // Deploy Library contract with bookToken contract address as parameter
 
         await BookToken.addBook("Harry Potter", "J.K. Rowling", "3", "1234567890");
@@ -61,15 +62,22 @@ contract('Library', async () => {
         // Get the book ids of the books added to the library
 
 
-        await LibraryInstance.bookBorrow(shogun_book_id.toNumber());
-        await LibraryInstance.bookBorrow(harry_potter_book_id.toNumber());
-        await LibraryInstance.bookBorrow(lotr_book_id.toNumber());
+        await LibraryInstance.bookBorrow("0xb28c9ade2882319974aaa9e860cd5633febcc4cc", shogun_book_id.toNumber());
+        await LibraryInstance.bookBorrow("0xb28c9ade2882319974aaa9e860cd5633febcc4cc", harry_potter_book_id.toNumber());
+        await LibraryInstance.bookBorrow("0xb28c9ade2882319974aaa9e860cd5633febcc4cc", lotr_book_id.toNumber());
 
-        assert.equal(LibraryInstance.bookBalance["0xb28c9ade2882319974aaa9e860cd5633febcc4cc"], 3, "Book balance is not correct");
+        console.log(await LibraryInstance.getUserDetails("0xb28c9ade2882319974aaa9e860cd5633febcc4cc"));
+        // Shouldn't return undefined. But it does.
 
-        // The test fails again. Something is not right with the bookBorrow function. Will fix it tonight.
-        // More testing has revealed that something is not right with the getBookId function.
+        const bookBalance = await LibraryInstance.getbookBalance("0xb28c9ade2882319974aaa9e860cd5633febcc4cc");
+        assert.equal(bookBalance, 3, "Book balance is not correct");
+        // Hell yeah baby this works now. Great!
+
+        // The test fails again. Something is not right with the bookBorrow function. Will fix it tonight. [ FIXED ]
+        // More testing has revealed that something is not right with the getBookId function. [FIXED]
         // Everything was almost alright. I just had to add the await keyword before the function call.
+
+        // The reason the test was failing was because you can't access bookBalance directly. You have to define and use a getter function.
 
     })
 
@@ -78,11 +86,23 @@ contract('Library', async () => {
         assert.equal(total, 3, "Total books is not correct");
     })
 
-    it('Checking to see if correct IDs are being assigned to the books', async () => {
+    it("Checking if the getBorrowedBooks function works", async () => {
+
+        await LibraryInstance.bookBorrow("0xb28c9ade2882319974aaa9e860cd5633febcc4cc", 1);
+        await LibraryInstance.bookBorrow("0xb28c9ade2882319974aaa9e860cd5633febcc4cc", 2);
+        await LibraryInstance.bookBorrow("0xb28c9ade2882319974aaa9e860cd5633febcc4cc", 3);
+        // Borrowing the same books we borrowed in the other test case.
+
         const Ids = await LibraryInstance.getBorrowedBooks("0xb28c9ade2882319974aaa9e860cd5633febcc4cc");
-        console.log(userInstance.address);
-        console.log(Ids);
-        // Okay so it appears that the IDs aren't being assigned to the given address but to the address of the library contract itself.
-        // This will be fixed tomorrow.
+        let actualId = Ids.map(id => id.toNumber());
+        const balance = new BigNumber(await LibraryInstance.getbookBalance("0xb28c9ade2882319974aaa9e860cd5633febcc4cc")).toNumber();
+        actualId = actualId.slice(0, balance);
+        console.log(actualId);
+
+        // Even though these are just test cases, limiting the amount of hardcoding of data as much as possible will definitely pay off.
+
+        assert.deepEqual(actualId, [1, 2, 3], "Book IDs is not correct");
+
+        // Fixed. Let's goooooo!
     })
 })
