@@ -7,17 +7,27 @@ import "./user.sol";
 contract Library {
     address private bookTokenAddress;
     address private userAddress;
-    //The purpose of bookTokenAddress is to store the address of the bookToken contract.
+    // bookTokenAddress is to store the address of the bookToken contract.
     bookToken public bookTokenContract;
     user public userContract;
 
-    constructor(address _bookTokenAddress, address _userAddress) {
+    uint256 maxHolds;
+
+    // Maximum number of hold the library allows a user to have at a time.
+
+    constructor(
+        address _bookTokenAddress,
+        address _userAddress,
+        uint256 _maxHolds
+    ) {
         bookTokenAddress = _bookTokenAddress;
         bookTokenContract = bookToken(bookTokenAddress);
         // This is how we can access the functions of the bookToken contract.
         userAddress = _userAddress;
         userContract = user(_userAddress);
         // This is how we can access the functions of the user contract.
+
+        maxHolds = _maxHolds;
     }
 
     mapping(address => uint256) public bookBalance;
@@ -102,7 +112,7 @@ contract Library {
     function getBorrowedBooks(
         address _address
     ) public view returns (uint256[] memory) {
-        uint256[] memory bookIds = new uint256[](bookBalance[_address]);
+        uint256[] memory bookIds = new uint256[](maxHolds);
         uint256 count = 0;
 
         for (uint256 i = 1; i <= bookTokenContract.totalBooks(); i++) {

@@ -8,6 +8,7 @@ contract('Library', async () => {
     let LibraryInstance;
     let BookToken;
     let userInstance;
+    let maxHolds = 10;
 
     beforeEach(async () => {
         BookToken = await bookToken.new();
@@ -16,7 +17,7 @@ contract('Library', async () => {
         userInstance = await user.new("0xb28c9ade2882319974aaa9e860cd5633febcc4cc", "Devansh", "dgupta0069@gmail.com");
         // Deploy user contract
 
-        LibraryInstance = await Library.new(BookToken.address, userInstance.address);
+        LibraryInstance = await Library.new(BookToken.address, userInstance.address, maxHolds);
         // Deploy Library contract with bookToken contract address as parameter
 
         await BookToken.addBook("Harry Potter", "J.K. Rowling", "3", "1234567890");
@@ -75,7 +76,6 @@ contract('Library', async () => {
         // The test fails again. Something is not right with the bookBorrow function. Will fix it tonight. [ FIXED ]
         // More testing has revealed that something is not right with the getBookId function. [FIXED]
         // Everything was almost alright. I just had to add the await keyword before the function call.
-        // The test fails again. Something is not right with the bookBorrow function. Will fix it tonight. [ FIXED ]
 
         // The reason the test was failing was because you can't access bookBalance directly. You have to define and use a getter function.
 
@@ -86,17 +86,23 @@ contract('Library', async () => {
         assert.equal(total, 3, "Total books is not correct");
     })
 
-    it('Checking to see if correct IDs are being assigned to the books', async () => {
-        const Ids = await LibraryInstance.getBorrowedBooks("0xb28c9ade2882319974aaa9e860cd5633febcc4cc");
-        console.log(await userInstance.UserAddress.call());
-        console.log(Ids);
-        console.log(await BookToken.isBookAvailable(2));
-    })
-
     it("Checking if the getBorrowedBooks function works", async () => {
-        const Ids = await LibraryInstance.getBorrowedBooks("0xb28c9ade2882319974aaa9e860cd5633febcc4cc");
-        console.log(Ids);
 
-        assert.equal(Ids, [1, 2, 3], "Book IDs is not correct");
+        await LibraryInstance.bookBorrow("0xb28c9ade2882319974aaa9e860cd5633febcc4cc", 1);
+        await LibraryInstance.bookBorrow("0xb28c9ade2882319974aaa9e860cd5633febcc4cc", 2);
+        await LibraryInstance.bookBorrow("0xb28c9ade2882319974aaa9e860cd5633febcc4cc", 3);
+        // Borrowing the same books we borrowed in the other test case.
+
+        const Ids = await LibraryInstance.getBorrowedBooks("0xb28c9ade2882319974aaa9e860cd5633febcc4cc");
+        let actualId = Ids.map(id => id.toNumber());
+        const balance = new BigNumber(await LibraryInstance.getbookBalance("0xb28c9ade2882319974aaa9e860cd5633febcc4cc")).toNumber();
+        actualId = actualId.slice(0, balance);
+        console.log(actualId);
+
+        // Even though these are just test cases, limiting the amount of hardcoding of data as much as possible will definitely pay off.
+
+        assert.deepEqual(actualId, [1, 2, 3], "Book IDs is not correct");
+
+        // Fixed. Let's goooooo!
     })
 })
