@@ -92,7 +92,16 @@ contract Library {
         }
 
         booksIssued[_userAddress][_bookId] = true;
+
         userContract.setUserBalance(_userAddress, bookBalance[_userAddress]);
+        // Update the user's book balance in the user contract struct.
+
+        if (bookBalance[_userAddress] > maxHolds) {
+            revert("You have exceeded the maximum number of holds");
+        } else {
+            userContract.setUserHolds(_userAddress, _bookId);
+        }
+        // Add the bookId to the user's borrowedBooks array.
 
         emit bookBorrowed(_userAddress, _bookId, bookBalance[_userAddress]);
     }

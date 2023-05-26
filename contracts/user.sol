@@ -39,6 +39,10 @@ contract user {
         return users[_userAddress].bookBalance;
     }
 
+    function setUserHolds(address _address, uint256 _bookId) public {
+        users[_address].borrowedBooks.push(_bookId);
+    }
+
     function getUser(address _userAddress) public view returns (User memory) {
         return users[_userAddress];
     }
