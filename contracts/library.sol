@@ -45,7 +45,11 @@ contract Library {
         uint256 indexed _bookId,
         uint256 _bookBalance
     );
-    event bookReturned(address indexed _borrower, uint256 indexed _bookId);
+    event bookReturned(
+        address indexed _borrower,
+        uint256 indexed _bookId,
+        uint256 indexed _bookBalance
+    );
 
     function registerUser(
         address _userAddress,
@@ -99,23 +103,31 @@ contract Library {
         if (bookBalance[_userAddress] > maxHolds) {
             revert("You have exceeded the maximum number of holds");
         } else {
-            userContract.setUserHolds(_userAddress, _bookId);
+            userContract.setUserHoldsBorrow(_userAddress, _bookId);
         }
         // Add the bookId to the user's borrowedBooks array.
 
         emit bookBorrowed(_userAddress, _bookId, bookBalance[_userAddress]);
     }
 
-    function returnBook(uint256 _bookId) public {
+    function bookReturn(address _userAddress, uint256 _bookId) public {
+        require(bookBalance[_userAddress] > 0, "You have no holds");
+
         require(
-            booksIssued[msg.sender][_bookId] == true,
+            booksIssued[_userAddress][_bookId] == true,
             "Book has not been issued by you"
         );
 
-        bookBalance[msg.sender] -= 1;
-        booksIssued[msg.sender][_bookId] = false;
+        bookBalance[_userAddress] -= 1;
+        booksIssued[_userAddress][_bookId] = false;
 
-        emit bookReturned(msg.sender, _bookId);
+        userContract.setUserBalance(_userAddress, bookBalance[_userAddress]);
+        // Update the user's book balance in the user contract struct.
+
+        userContract.setUserHoldsReturn(_userAddress, _bookId);
+        // Remove the bookId from the user's borrowedBooks array.
+
+        emit bookReturned(_userAddress, _bookId, bookBalance[_userAddress]);
     }
 
     function getBorrowedBooks(

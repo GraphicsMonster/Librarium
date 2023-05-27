@@ -105,4 +105,35 @@ contract('Library', async () => {
 
         // Fixed. Let's goooooo!
     })
+
+    it("Testing the return function", async () => {
+
+        await LibraryInstance.bookBorrow("0xb28c9ade2882319974aaa9e860cd5633febcc4cc", 1);
+        await LibraryInstance.bookBorrow("0xb28c9ade2882319974aaa9e860cd5633febcc4cc", 2);
+        await LibraryInstance.bookBorrow("0xb28c9ade2882319974aaa9e860cd5633febcc4cc", 3);
+        // Borrowing the same books we borrowed in the other test case.
+
+        console.log(await LibraryInstance.getUserDetails("0xb28c9ade2882319974aaa9e860cd5633febcc4cc"));
+        // logs expected Details
+
+        let borrowedBooks = await LibraryInstance.getBorrowedBooks("0xb28c9ade2882319974aaa9e860cd5633febcc4cc");
+        let balance = new BigNumber(await LibraryInstance.getbookBalance("0xb28c9ade2882319974aaa9e860cd5633febcc4cc")).toNumber();
+        borrowedBooks = borrowedBooks.map(id => id.toNumber());
+        borrowedBooks = borrowedBooks.slice(0, balance);
+        assert.deepEqual(borrowedBooks, [1, 2, 3], "Book IDs is not correct");
+        // Checking if the books were borrowed correctly
+
+        await LibraryInstance.bookReturn("0xb28c9ade2882319974aaa9e860cd5633febcc4cc", 1);
+        // Returning the first book
+
+        console.log(await LibraryInstance.getUserDetails("0xb28c9ade2882319974aaa9e860cd5633febcc4cc"));
+        // logs expected Details
+
+        borrowedBooks = await LibraryInstance.getBorrowedBooks("0xb28c9ade2882319974aaa9e860cd5633febcc4cc");
+        balance = new BigNumber(await LibraryInstance.getbookBalance("0xb28c9ade2882319974aaa9e860cd5633febcc4cc")).toNumber();
+        borrowedBooks = borrowedBooks.map(id => id.toNumber());
+        borrowedBooks = borrowedBooks.slice(0, balance);
+        assert.deepEqual(borrowedBooks, [2, 3], "Book IDs is not correct");
+        // Checking if the book was returned correctly.
+    })
 })

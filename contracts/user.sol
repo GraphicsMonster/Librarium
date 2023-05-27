@@ -39,8 +39,19 @@ contract user {
         return users[_userAddress].bookBalance;
     }
 
-    function setUserHolds(address _address, uint256 _bookId) public {
+    function setUserHoldsBorrow(address _address, uint256 _bookId) public {
         users[_address].borrowedBooks.push(_bookId);
+    }
+
+    function setUserHoldsReturn(address _address, uint256 _bookId) public view {
+        uint256[] memory holds = users[_address].borrowedBooks;
+        for (uint256 i = 0; i < holds.length; i++) {
+            if (holds[i] == _bookId) {
+                holds[i] = holds[holds.length - 1];
+                delete holds[holds.length - 1];
+                break;
+            }
+        }
     }
 
     function getUser(address _userAddress) public view returns (User memory) {
