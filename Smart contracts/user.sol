@@ -29,6 +29,31 @@ contract user {
         users[_userAddress] = User(_name, _email, 0, new uint256[](0));
     }
 
+    function setUserBalance(address _userAddress, uint256 _balance) public {
+        users[_userAddress].bookBalance = _balance;
+    }
+
+    function getUserBalance(
+        address _userAddress
+    ) public view returns (uint256) {
+        return users[_userAddress].bookBalance;
+    }
+
+    function setUserHoldsBorrow(address _address, uint256 _bookId) public {
+        users[_address].borrowedBooks.push(_bookId);
+    }
+
+    function setUserHoldsReturn(address _address, uint256 _bookId) public view {
+        uint256[] memory holds = users[_address].borrowedBooks;
+        for (uint256 i = 0; i < holds.length; i++) {
+            if (holds[i] == _bookId) {
+                holds[i] = holds[holds.length - 1];
+                delete holds[holds.length - 1];
+                break;
+            }
+        }
+    }
+
     function getUser(address _userAddress) public view returns (User memory) {
         return users[_userAddress];
     }
@@ -43,6 +68,9 @@ contract user {
             "User with this address already exists"
         );
         emit userRegistered(_userAddress, _name, _email);
+        users[_userAddress] = User(_name, _email, 0, new uint256[](0));
+
+        // The user is registered through the constructor primarily, but this function makes it easier to register users through other contracts.
     }
 
     function userExists(address _userAddress) public view returns (bool) {
