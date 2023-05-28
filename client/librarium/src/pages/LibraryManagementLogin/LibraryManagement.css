@@ -1,0 +1,44 @@
+.loginForm {
+  width: 50vw;
+  margin: 1rem auto;
+  padding: 1rem;
+  background-color: #f5f5f5;
+  border-radius: 5px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  font-family: "Martian Mono", monospace;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column;
+    width: 50vw;
+  }
+}
+
+.lib-id,
+.password {
+  padding: 0.5rem;
+}
+
+.lib-input,
+.password-input {
+  padding: 0.5rem;
+}
+
+.submit-button {
+  padding: 0.5rem;
+  margin: 0.5rem;
+  background-color: #f5f5f5;
+  border: 1px solid #000;
+  border-radius: 5px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  font-family: "Martian Mono", monospace;
+  cursor: pointer;
+}
