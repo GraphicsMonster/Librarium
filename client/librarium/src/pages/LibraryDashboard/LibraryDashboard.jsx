@@ -6,8 +6,14 @@ import Sidebar from '../../components/sidebar/sidebar.jsx';
 function LibraryDashboard() {
   return (
     <>
-      <Sidebar />
-      <ProfileCard />
+    <div className='dashboard__container'>
+      <div className='dashboard__sidebar'>
+          <Sidebar />
+      </div>
+      <div className='dashboard__content'>
+          <ProfileCard />
+      </div>
+    </div>
     </>
   )
 }
