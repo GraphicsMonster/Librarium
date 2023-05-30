@@ -1,0 +1,30 @@
+/* BookCard.css */
+.book-card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.book-card__image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px 10px 0 0;
+}
+
+.book-card__content {
+  padding: 20px;
+}
+
+.book-card__title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.book-card__description {
+  font-size: 14px;
+  color: #888888;
+}

@@ -7,3 +7,4 @@
 #root > * {
   margin: 1rem;
 }
+/* what this does is it makes the root element have a margin of 0 auto, which means it will be centered on the page. It also has a padding of 2rem, which is 32px. This is just to give the page some breathing room. The next line says that all direct children of the root element will have a margin of 1rem, which is 16px. This is just to give the elements some breathing room. */
