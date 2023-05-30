@@ -1,0 +1,21 @@
+.user-dashboard-container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar-container {
+  width: 300px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.user-dashboard-content {
+  flex: 1;
+  margin-left: 200px;
+  padding: 20px;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}

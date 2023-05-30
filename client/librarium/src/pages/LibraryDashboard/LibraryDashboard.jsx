@@ -5,11 +5,14 @@ import Inventory from './../../components/Inventory/Inventory.jsx'
 import Sidebar from '../../components/sidebar/sidebar.jsx';
 
 function LibraryDashboard() {
+
+  const props = { isItLibrary: true};
+
   return (
     <>
     <div className='dashboard__container'>
       <div className='dashboard__sidebar'>
-          <Sidebar />
+          <Sidebar props />
       </div>
       <div className='dashboard__content'>
           <ProfileCard />

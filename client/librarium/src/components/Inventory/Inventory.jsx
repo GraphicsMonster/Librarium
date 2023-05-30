@@ -12,12 +12,12 @@ function Inventory() {
         <BookCard
           title="Item 1"
           image="item1.jpg"
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+          description="Random shit for testing"
         />
         <BookCard
           title="Item 2"
           image="item2.jpg"
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+          description="Too lazy to find full lorem ipsum and paste"
         />
         {/* ... */}
       </div>

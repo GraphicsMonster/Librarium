@@ -1,7 +1,7 @@
 import React from 'react'
 import "./LibraryManagement.css"
 
-function LibraryLogin() {
+const LibraryLogin = () => {
   return (
     <><div className='loginForm'>
     <div className='loginForm__form'>

@@ -1,7 +1,7 @@
 import React from 'react'
 import './UserLogin.css'
 
-function LoginForm() {
+const UserLogin = () => {
   return (
     <div className='loginForm'>
         <div className='loginForm__form'>
@@ -47,5 +47,5 @@ const getCredentials = () => {
 }
 
 
-export default LoginForm;
+export default UserLogin;
 export {getCredentials};
