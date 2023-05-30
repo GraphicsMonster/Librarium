@@ -1,5 +1,21 @@
-.dashboard-container {
+.dashboard__container {
   display: flex;
-  flex-direction: column;
+  height: 100vh;
+}
+
+.dashboard__sidebar {
+  width: 300px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.dashboard__content {
+  flex: 1;
+  margin-left: 200px;
+  padding: 20px;
+  width: 100%;
   height: 100%;
+  overflow-y: auto;
 }
