@@ -1,4 +1,6 @@
-import { useState } from 'react'
+import * as React from 'react'
+import * as ReactDOM from 'react-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import AddBook from './components/addBook/addBook.jsx'
 import UserLogin from './pages/UserLogin/UserLogin.jsx'
 import LibraryLogin from './pages/LibraryManagementLogin/LibraryManagement.jsx';
@@ -9,10 +11,14 @@ import './App.css'
 const App = () => 
 {
 
+  const router = createBrowserRouter([{
+    path: '/',
+    element: <UserLogin />,
+  }
+])
+  
   return (
-    <>
-      <UserLogin />
-    </>
+    <RouterProvider router={router} />
   )
 }
 
