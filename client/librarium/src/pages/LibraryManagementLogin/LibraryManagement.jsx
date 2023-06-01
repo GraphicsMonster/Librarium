@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 import "./LibraryManagement.css"
 
 const LibraryLogin = () => {
@@ -22,7 +23,12 @@ const LibraryLogin = () => {
             <button onClick={onSubmit} type='submit'id='lib-log-in-submit' className='submit-btn'>Login</button>
         </div>
     </div>
-</div></>
+</div>
+
+<div className='library-login-footer'>
+    <p>Are you a User registered with us? <Link to='/'>User Login page</Link></p>
+</div>
+</>
   )
 }
 

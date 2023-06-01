@@ -1,8 +1,10 @@
 import React from 'react'
 import './UserLogin.css'
+import {Link} from 'react-router-dom'
 
 const UserLogin = () => {
   return (
+    <>
     <div className='loginForm'>
         <div className='loginForm__form'>
             <div className='row'>
@@ -23,6 +25,11 @@ const UserLogin = () => {
             </div>
         </div>
     </div>
+    <div className='loginForm__footer'>
+        <p>Are you a Library registered with us? <Link to='/library'>Library Login page</Link></p>
+    </div>
+
+    </>
 
   )
 }
