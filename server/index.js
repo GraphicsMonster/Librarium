@@ -32,9 +32,11 @@ const userContract = new web3.eth.Contract(userContractABI, userContractAddress)
 const libraryContract = new web3.eth.Contract(libraryContractABI, libraryContractAddress);
 // We need to create instances of the contracts we want to interact with
 
-app.get('/api/bookToken/:id', async (req, res) => {
+app.get('/api/library/:lib_Id/bookToken/:book_Id', async (req, res) => {
     try {
-        const bookId = req.params.id;
+        const LibraryId = req.params.lib_Id;
+        const bookId = req.params.book_Id;
+        // We are fetching the library id and book id from the request parameters
 
         const bookDetails = await bookTokenContract.getBookDetails(bookId);
         // We are fetching the book details from the blockchain
