@@ -11,25 +11,25 @@ const web3 = new Web3('http://localhost:8545')
 // This script serves as the intermediary between the client side and the blockchain.
 // Let's code!
 
-
+const libraryContractFactory = require('../build/contracts/libraryContractFactory.json');
 const BookToken = require('../build/contracts/bookToken.json');
 const User = require('../build/contracts/user.json');
 const Library = require('../build/contracts/library.json');
 // We need to import the json files of the contracts we want to interact with
 
+const libraryContractFactoryABI = libraryContractFactory.abi;
 const bookTokenContractABI = BookToken.abi;
 const userContractABI = User.abi;
 const libraryContractABI = Library.abi;
 // We need to import the abi of the contracts we want to interact with
 
+const libraryContractFactoryAddress = libraryContractFactory.networks['5777'].address;
 const bookTokenContractAddress = BookToken.networks['5777'].address;
 const userContractAddress = User.networks['5777'].address;
 const libraryContractAddress = Library.networks['5777'].address;
 // We need to import the address of the contracts we want to interact with
 
-const bookTokenContract = new web3.eth.Contract(bookTokenContractABI, bookTokenContractAddress);
-const userContract = new web3.eth.Contract(userContractABI, userContractAddress);
-const libraryContract = new web3.eth.Contract(libraryContractABI, libraryContractAddress);
+const libraryContractFactory = new web3.eth.Contract(libraryContractABI, libraryContractFactoryAddress);
 // We need to create instances of the contracts we want to interact with
 
 app.get('/api/library/:lib_Id/bookToken/:book_Id', async (req, res) => {
@@ -38,7 +38,13 @@ app.get('/api/library/:lib_Id/bookToken/:book_Id', async (req, res) => {
         const bookId = req.params.book_Id;
         // We are fetching the library id and book id from the request parameters
 
-        const bookDetails = await bookTokenContract.getBookDetails(bookId);
+        const libraryContractAddress = await libraryContractFactory.methods.getLibrary(LibraryId).call();
+        // This fetches the address of the library we are interested in from the blockchain
+
+        const libraryContract = new web3.eth.Contract(libraryContractABI, libraryContractAddress);
+        // We are creating an instance of the library contract we are interested in
+
+        const bookDetails = await libraryContract.bookTokenContract.methods.getBook(bookId).call();
         // We are fetching the book details from the blockchain
         const response = {
             bookId: bookId,
