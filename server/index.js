@@ -30,7 +30,7 @@ const libraryContractAddress = Library.networks['5777'].address;
 // We need to import the address of the contracts we want to interact with
 
 const libraryContractFactory = new web3.eth.Contract(libraryContractABI, libraryContractFactoryAddress);
-// We need to create instances of the contracts we want to interact with
+// Creating an instance of the library contract factory so that we can interact with it
 
 app.get('/api/library/:lib_Id/bookToken/:book_Id', async (req, res) => {
     try {
@@ -69,31 +69,38 @@ app.get('/api/library/:lib_Id/bookToken/:book_Id', async (req, res) => {
 
 
 app.get('api/library/:id/books', async (req, res) => {
-    const libraryId = req.params.id;
-    const librarycontractABI = ''
 
+    try {
+        const libraryId = req.params.id;
 
-    //Oh fuck this is confusing. I think the way i have made the contracts communicate is pretty absurd lmao. 
-    //ok I think I know what is going wrong here. I should create a system such that each library has its own unique id in my database.
-    //for that i also need a database which i am yet to set up. and then in the database i keep 
+        const libraryAddress = await libraryContractFactory.methods.getLibrary(libraryId).call();
+        const librarycontract = new web3.eth.Contract(libraryContractABI, libraryAddress);
+        //Fetching address and creating instance of library contract
+
+        const books = await librarycontract.bookTokenContract.methods.getBooks().call();
+        //Fetching books from the blockchain. This function needs some work. I think something's wrong with it.
+
+        res.json(books);
+    }
+    catch (error) {
+        res.status(500).json({ error: "Something went wrong while fetching book details" });
+    }
+
+    //Oh fuck this is confusing. I think the way i have made the contracts communicate is pretty absurd lmao. [FIXED]
 })
 
-app.get('api/library/:id/users', async (req, res) => {
-    const libraryId = req.params.id;
-    const libraryAddress = '';
-    const librarycontract = new web3.eth.Contract(libraryContractABI, libraryAddress);
+app.get('api/library/:LibId/users', async (req, res) => {
+    try {
+        const lib_Id = req.params.LibId;
 
-    const userContractId = librarycontract.userContract;
-    const bookTokenContract = librarycontract.bookTokenContract;
+        const libraryContractAddress = await libraryContractFactory.methods.getLibrary(lib_Id).call();
+        const libraryContract = new web3.eth.Contract(libraryContractABI, libraryContractAddress);
 
-    librarycontract.userContract.methods.getUsers().call((error, users) => {
+        const users = libraryContract.userContract.methods.getUsers().call();
 
-        if (error) {
-            // Handling the case where something goes wrong whilst fetching userdata
-            res.status(500).json({ error: "Something went wrong while fetching user data" });
-        }
-        else {
-            res.json({ users: { users } });
-        }
-    })
+        res.json(users);
+    }
+    catch (error) {
+        res.status(500).json({ error: "Something went wrong while fetching users" })
+    }
 })
