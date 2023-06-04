@@ -15,16 +15,12 @@ contract Library {
 
     // Maximum number of hold the library allows a user to have at a time.
 
-    constructor(
-        address _bookTokenAddress,
-        address _userAddress,
-        uint256 _maxHolds
-    ) {
-        bookTokenAddress = _bookTokenAddress;
-        bookTokenContract = bookToken(bookTokenAddress);
+    constructor(uint256 _maxHolds) {
+        bookTokenContract = new bookToken();
+        bookTokenAddress = address(bookTokenContract);
         // This is how we can access the functions of the bookToken contract.
-        userAddress = _userAddress;
-        userContract = user(_userAddress);
+        userContract = new user();
+        userAddress = address(userContract);
         // This is how we can access the functions of the user contract.
 
         maxHolds = _maxHolds;

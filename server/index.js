@@ -76,7 +76,7 @@ app.get('api/library/:id/users', async (req, res) => {
     const librarycontract = new web3.eth.Contract(libraryContractABI, libraryAddress);
 
     const userContractId = librarycontract.userContract;
-    const bookTokenContract = librayrcontract.bookTokenContract;
+    const bookTokenContract = librarycontract.bookTokenContract;
 
     librarycontract.userContract.methods.getUsers().call((error, users) => {
 
