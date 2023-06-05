@@ -5,17 +5,29 @@ import "./bookToken.sol";
 import "./user.sol";
 
 contract Library {
+    struct Lib_Details {
+        string name;
+        string location;
+        string email;
+        string phone;
+        uint256 maxHolds;
+    }
+    Lib_Details public libraryDetails;
     address private bookTokenAddress;
     address private userAddress;
     // bookTokenAddress is to store the address of the bookToken contract.
     bookToken public bookTokenContract;
     user public userContract;
 
-    uint256 maxHolds;
-
     // Maximum number of hold the library allows a user to have at a time.
 
-    constructor(uint256 _maxHolds) {
+    constructor(
+        string memory _name,
+        string memory _location,
+        string memory _email,
+        string memory _phone,
+        uint256 _maxHolds
+    ) {
         bookTokenContract = new bookToken();
         bookTokenAddress = address(bookTokenContract);
         // This is how we can access the functions of the bookToken contract.
@@ -23,8 +35,23 @@ contract Library {
         userAddress = address(userContract);
         // This is how we can access the functions of the user contract.
 
-        maxHolds = _maxHolds;
+        libraryDetails = Lib_Details(
+            _name,
+            _location,
+            _email,
+            _phone,
+            _maxHolds
+        );
     }
+
+    function getLibraryDetails() public view returns (Lib_Details memory) {
+        return libraryDetails;
+    }
+
+    // We can fetch library Data using this function.
+    // Routing setup for this => Library Id will be passed through query params => Library address will be fetched using the
+    // function defined in the library factory contract => Using this address we can connect to this specific instance of
+    // library contract => then this function will be called using instance.getLibraryDetails().call()
 
     mapping(address => uint256) public bookBalance;
 
@@ -96,7 +123,7 @@ contract Library {
         userContract.setUserBalance(_userAddress, bookBalance[_userAddress]);
         // Update the user's book balance in the user contract struct.
 
-        if (bookBalance[_userAddress] > maxHolds) {
+        if (bookBalance[_userAddress] > libraryDetails.maxHolds) {
             revert("You have exceeded the maximum number of holds");
         } else {
             userContract.setUserHoldsBorrow(_userAddress, _bookId);
@@ -129,7 +156,7 @@ contract Library {
     function getBorrowedBooks(
         address _address
     ) public view returns (uint256[] memory) {
-        uint256[] memory bookIds = new uint256[](maxHolds);
+        uint256[] memory bookIds = new uint256[](libraryDetails.maxHolds);
         uint256 count = 0;
 
         for (uint256 i = 1; i <= bookTokenContract.totalBooks(); i++) {

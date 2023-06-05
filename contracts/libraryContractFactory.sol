@@ -12,20 +12,47 @@ contract LibraryContractFactory {
 
     event LibraryCreated(
         address indexed libraryAddress,
-        uint256 indexed libraryId
+        uint256 indexed libraryId,
+        string name,
+        string location,
+        string email,
+        string phone,
+        uint256 maxholds
     );
 
-    function createLibrary() public {
+    function createLibrary(
+        string memory name,
+        string memory location,
+        string memory email,
+        string memory phone,
+        uint256 maxholds
+    ) public {
         // Deploy a new instance of the Library contract
-        Library newLibrary = new Library(10);
+        Library newLibrary = new Library(
+            name,
+            location,
+            email,
+            phone,
+            maxholds
+        );
         // Store the library address mapped to its unique address in this contract
         totalLibraries = totalLibraries + 1;
         libraries[totalLibraries] = address(newLibrary);
         // Emit an event to notify the creation of a new library
-        emit LibraryCreated(address(newLibrary), totalLibraries);
+        emit LibraryCreated(
+            address(newLibrary),
+            totalLibraries,
+            name,
+            location,
+            email,
+            phone,
+            maxholds
+        );
     }
 
-    function getLibrary(uint256 library_id) public view returns (address) {
+    function getLibraryAddress(
+        uint256 library_id
+    ) public view returns (address) {
         // Retrieve the library address for the calling customer
         return libraries[library_id];
     }
