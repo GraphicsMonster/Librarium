@@ -17,20 +17,65 @@ const User = require('../build/contracts/user.json');
 const Library = require('../build/contracts/library.json');
 // We need to import the json files of the contracts we want to interact with
 
-const libraryContractFactoryABI = libraryContractFactory.abi;
-const bookTokenContractABI = BookToken.abi;
-const userContractABI = User.abi;
+
 const libraryContractABI = Library.abi;
 // We need to import the abi of the contracts we want to interact with
 
 const libraryContractFactoryAddress = libraryContractFactory.networks['5777'].address;
-const bookTokenContractAddress = BookToken.networks['5777'].address;
-const userContractAddress = User.networks['5777'].address;
-const libraryContractAddress = Library.networks['5777'].address;
 // We need to import the address of the contracts we want to interact with
 
 const libraryContractFactory = new web3.eth.Contract(libraryContractABI, libraryContractFactoryAddress);
 // Creating an instance of the library contract factory so that we can interact with it
+
+app.post('/api/library/create', async (req, res) => {
+    try {
+        const { name, location, email, phone, maxhold } = req.body;
+        // Fetching library details from request body
+
+        await libraryContractFactory.methods.createLibrary(name, location, email, phone, maxhold).send({ from: '0x7e5F4552091A69125d5DfCb7b8C2659029395Bdf' });
+        // Creating a new library contract on the blockchain
+
+        res.json({ message: "Library created successfully" });
+    }
+    catch (error) {
+        console.error("An error occured while creating library:", error);
+        res.status(500).json({ error: "Something went wrong while creating library" });
+    }
+})
+// This is the endpoint for creating a new library. The client side will send a request to this endpoint with the library details in the request body
+
+
+// Library specific routes start here:
+
+app.get('/api/library/:id', async (req, res) => {
+    try {
+        const libraryId = req.params.id;
+        // We are fetching the library id from the request parameters
+
+        const libraryAddress = await libraryContractFactory.methods.getLibraryAddress(libraryId).call();
+        // This fetches the address of the library we are interested in from the blockchain
+
+        const libraryContract = new web3.eth.Contract(libraryContractABI, libraryAddress);
+        // We are creating an instance of the library contract we are interested in
+
+        const libraryDetails = await libraryContract.methods.getLibraryDetails().call();
+
+        const response = {
+            libraryId: libraryId,
+            name: libraryDetails[0],
+            location: libraryDetails[1],
+            email: libraryDetails[2],
+            phone: libraryDetails[3],
+            maxhold: libraryDetails[4],
+        }
+        res.json(response);
+        // sending library details to the client side
+    }
+    catch (error) {
+        console.error("An error occured while fetching library details:", error);
+        res.status(500).json({ error: "Something went wrong while fetching library details" });
+    }
+})
 
 app.get('/api/library/:lib_Id/bookToken/:book_Id', async (req, res) => {
     try {
@@ -87,6 +132,7 @@ app.get('api/library/:id/books', async (req, res) => {
     }
 
     //Oh fuck this is confusing. I think the way i have made the contracts communicate is pretty absurd lmao. [FIXED]
+    // so this route handles the case where we ask for all the books in a library's inventory
 })
 
 app.get('api/library/:LibId/users', async (req, res) => {
@@ -103,4 +149,6 @@ app.get('api/library/:LibId/users', async (req, res) => {
     catch (error) {
         res.status(500).json({ error: "Something went wrong while fetching users" })
     }
+
+    // This route handles the case where we wanna retrieve the information we have about all the users.
 })
