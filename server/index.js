@@ -19,6 +19,9 @@ const Library = require('../build/contracts/library.json');
 
 
 const libraryContractABI = Library.abi;
+const bookTokenABI = BookToken.abi;
+const userABI = User.abi;
+const libraryABI = Library.abi;
 // We need to import the abi of the contracts we want to interact with
 
 const libraryContractFactoryAddress = libraryContractFactory.networks['5777'].address;
@@ -74,6 +77,46 @@ app.get('/api/library/:id', async (req, res) => {
     catch (error) {
         console.error("An error occured while fetching library details:", error);
         res.status(500).json({ error: "Something went wrong while fetching library details" });
+    }
+})
+
+app.post('/api/library/:id/addBook', async (req, res) => {
+
+    try {
+        const libraryId = req.params.id;
+
+        const libraryAddress = await libraryContractFactory.methods.getLibraryAddress(libraryId).call();
+        const libraryContract = new web3.eth.Contract(libraryContractABI, libraryAddress);
+
+        const { name, author, copies, isbn } = req.body;
+
+        await libraryContract.methods.addBook(name, author, copies, isbn).send({ from: '0x7e5F4552091A69125d5DfCb7b8C2659029395Bdf' });
+
+        res.json({ message: "Book added successfully" });
+    }
+    catch (error) {
+        console.error("An error occured while adding book:", error);
+        res.status(500).json({ error: "Something went wrong while adding book" });
+    }
+})
+
+app.post('/api/library/:id/registeruser', async (req, res) => {
+    try {
+        const libraryId = req.params.id;
+        const libraryAddress = await libraryContractFactory.methods.getLibraryAddress(libraryId).call();
+
+        const libraryContract = new web3.eth.Contract(libraryContractABI, libraryAddress);
+
+        const { address, name, email } = req.body;
+
+        await libraryContract.methods.registerUser(address, name, email).send({ from: '0x7e5F4552091A69125d5DfCb7b8C2659029395Bdf' });
+        //user is registered on the blockchain
+
+        res.json({ message: "User registered successfully" });
+    }
+    catch (error) {
+        console.error("An error occured while registering user:", error);
+        res.status(500).json({ error: "Something went wrong while registering user" });
     }
 })
 
@@ -133,6 +176,8 @@ app.get('api/library/:id/books', async (req, res) => {
 
     //Oh fuck this is confusing. I think the way i have made the contracts communicate is pretty absurd lmao. [FIXED]
     // so this route handles the case where we ask for all the books in a library's inventory
+    // This might cause issues because I think the getBooks function returns an array of a special type of construct type and not an object
+    // Should get clearer while testing
 })
 
 app.get('api/library/:LibId/users', async (req, res) => {

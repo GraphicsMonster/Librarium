@@ -82,6 +82,15 @@ contract Library {
         userContract.registerUser(_userAddress, name, email);
     }
 
+    function addBooks(
+        string memory _title,
+        string memory _author,
+        uint256 _copies,
+        string memory _isbn
+    ) public {
+        bookTokenContract.addBook(_title, _author, _copies, _isbn);
+    }
+
     function getUserDetails(
         address _userAddress
     ) public view returns (user.User memory) {
