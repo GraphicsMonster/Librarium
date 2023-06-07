@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.4.16 <0.9.0;
 
-import "./Library.sol";
+import "./library.sol";
 
 contract LibraryContractFactory {
     mapping(uint256 => address) public libraries;

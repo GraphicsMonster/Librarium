@@ -91,24 +91,24 @@ contract Library {
         bookTokenContract.addBook(_title, _author, _copies, _isbn);
     }
 
-    function getUserDetails(
-        address _userAddress
-    ) public view returns (user.User memory) {
-        return userContract.getUser(_userAddress);
-    }
+    // function getUserDetails(
+    //     address _userAddress
+    // ) public view returns (user.User memory) {
+    //     return userContract.getUser(_userAddress);
+    // }
 
-    function updateUserBalance(address _userAddress, uint256 _balance) public {
-        userContract.setUserBalance(_userAddress, _balance);
-    }
+    // function updateUserBalance(address _userAddress, uint256 _balance) public {
+    //     userContract.setUserBalance(_userAddress, _balance);
+    // }
 
-    function addCopies(uint256 _bookId, uint256 _copies) public {
-        require(
-            bookTokenContract.isBookAvailable(_bookId),
-            "Add the book first"
-        );
+    // function addCopies(uint256 _bookId, uint256 _copies) public {
+    //     require(
+    //         bookTokenContract.isBookAvailable(_bookId),
+    //         "Add the book first"
+    //     );
 
-        bookTokenContract.addCopies(_bookId, _copies);
-    }
+    //     bookTokenContract.addCopies(_bookId, _copies);
+    // }
 
     function bookBorrow(address _userAddress, uint256 _bookId) public {
         require(
@@ -162,21 +162,21 @@ contract Library {
         emit bookReturned(_userAddress, _bookId, bookBalance[_userAddress]);
     }
 
-    function getBorrowedBooks(
-        address _address
-    ) public view returns (uint256[] memory) {
-        uint256[] memory bookIds = new uint256[](libraryDetails.maxHolds);
-        uint256 count = 0;
+    // function getBorrowedBooks(
+    //     address _address
+    // ) public view returns (uint256[] memory) {
+    //     uint256[] memory bookIds = new uint256[](libraryDetails.maxHolds);
+    //     uint256 count = 0;
 
-        for (uint256 i = 1; i <= bookTokenContract.totalBooks(); i++) {
-            if (booksIssued[_address][i] == true) {
-                bookIds[count] = i;
-                count++;
-            }
-        }
+    //     for (uint256 i = 1; i <= bookTokenContract.totalBooks(); i++) {
+    //         if (booksIssued[_address][i] == true) {
+    //             bookIds[count] = i;
+    //             count++;
+    //         }
+    //     }
 
-        return bookIds;
-    }
+    //     return bookIds;
+    // }
 
     // The booksIssued mapping can only take boolean values for whether the user already holds a particular copy of the title.
     // This functionality is used in bookBorrow, bookReturned and getBorrowedBooks functions.
