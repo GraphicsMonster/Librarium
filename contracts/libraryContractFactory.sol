@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.4.16 <0.9.0;
 
-import "./Library.sol";
+import "./library.sol";
 
 contract LibraryContractFactory {
     mapping(uint256 => address) public libraries;
@@ -55,5 +55,10 @@ contract LibraryContractFactory {
     ) public view returns (address) {
         // Retrieve the library address for the calling customer
         return libraries[library_id];
+    }
+
+    function getTotalLibraries() public view returns (uint256) {
+        // Retrieve the total number of libraries created by this contract
+        return totalLibraries;
     }
 }
