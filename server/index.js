@@ -46,7 +46,7 @@ app.post('/api/library/create', async (req, res) => {
         const { name, location, email, phone, maxhold } = req.body;
         // Fetching library details from request body
 
-        await libraryContractFactory.methods.createLibrary(name, location, email, phone, maxhold).send({ from: senderAddress, gas: 3000000 });
+        await libraryContractFactory.methods.createLibrary(name, location, email, phone, maxhold).send({ from: senderAddress, gas: 5000000 });
         // Creating a new library contract on the blockchain
 
         res.json({ message: "Library created successfully" });

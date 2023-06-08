@@ -70,7 +70,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -83,7 +84,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -107,7 +109,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -176,7 +179,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -195,7 +199,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -214,7 +219,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [
@@ -251,7 +257,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -286,7 +293,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     }
   ],
   "metadata": "{\"compiler\":{\"version\":\"0.8.20+commit.a1b79de6\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"_bookId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"_title\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"_author\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"_copies\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"_isbn\",\"type\":\"string\"}],\"name\":\"bookAdded\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_title\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"_author\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"_copies\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"_isbn\",\"type\":\"string\"}],\"name\":\"addBook\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_bookId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_copies\",\"type\":\"uint256\"}],\"name\":\"addCopies\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"books\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"title\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"author\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"copies\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"isbn\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_bookId\",\"type\":\"uint256\"}],\"name\":\"getBookCopies\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_bookId\",\"type\":\"uint256\"}],\"name\":\"getBookDetails\",\"outputs\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"title\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"author\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"copies\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"isbn\",\"type\":\"string\"}],\"internalType\":\"struct bookToken.Book\",\"name\":\"\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_isbn\",\"type\":\"string\"}],\"name\":\"getBookId\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getBooks\",\"outputs\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"title\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"author\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"copies\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"isbn\",\"type\":\"string\"}],\"internalType\":\"struct bookToken.Book[]\",\"name\":\"\",\"type\":\"tuple[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_bookId\",\"type\":\"uint256\"}],\"name\":\"isBookAvailable\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalBooks\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"userBooks\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/bookToken.sol\":\"bookToken\"},\"evmVersion\":\"shanghai\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/bookToken.sol\":{\"keccak256\":\"0x861cc6079a69c213a396779ab7998e2eeb696f011bccbad3d090a996b6d40622\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://f3cceb96faeb65991281f846335853f795a91228a8b15434d276c620d20af2e1\",\"dweb:/ipfs/QmdXnhij7AuvsRnvhBpRp4kUfvo7DjPXn7ZWHzKgxKirbP\"]},\"project:/contracts/user.sol\":{\"keccak256\":\"0x8dd17b662fdedcbc765e55a8a8b9e25b9f5a72e7dcc0fa7a001d7ab946d4a884\",\"license\":\"GPL-3.0\",\"urls\":[\"bzz-raw://0a698aa3f2280a7ea82693d3c8d4de11c7d8b2fcd3d960b1bb1df0c1a3db8eda\",\"dweb:/ipfs/QmdsSLgsjtUcjJMpQBx8p6FCWBjfCzmtAxKrCBJXgzBWN9\"]}},\"version\":1}",
@@ -12370,7 +12378,7 @@
         288
       ],
       "user": [
-        984
+        992
       ]
     },
     "id": 289,
@@ -12398,7 +12406,7 @@
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
         "scope": 289,
-        "sourceUnit": 985,
+        "sourceUnit": 993,
         "src": "71:20:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -16025,12 +16033,13 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x3ddd02822b7c5809c3D9d0C0393d4E3f88B2d760",
-      "transactionHash": "0x0fdd92acc73c4ea7b030651c9d9aea3282c866d22fd065f0c9bb3b4f52dc8c83"
+      "address": "0xD0C591A7627920C908600E0B8ca4cCE97b357983",
+      "transactionHash": "0x8498015ae8bd30bdcee6544b8d282573a6c5179a6014ed5890a8f2e945fb43db"
     }
   },
   "schemaVersion": "3.4.14",
-  "updatedAt": "2023-06-07T10:42:00.047Z",
+  "updatedAt": "2023-06-08T06:30:19.045Z",
+  "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
     "methods": {},

@@ -56,4 +56,9 @@ contract LibraryContractFactory {
         // Retrieve the library address for the calling customer
         return libraries[library_id];
     }
+
+    function getTotalLibraries() public view returns (uint256) {
+        // Retrieve the total number of libraries created by this contract
+        return totalLibraries;
+    }
 }
