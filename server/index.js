@@ -59,12 +59,36 @@ app.post('/api/library/create', async (req, res) => {
 // This is the endpoint for creating a new library. The client side will send a request to this endpoint with the library details in the request body
 
 
+app.get('/api/library/count', async (req, res) => {
+    try {
+        const libraryCount = await libraryContractFactory.methods.getTotalLibraries().call();
+        // Fetching library count from the blockchain
+
+        res.json({ libraryCount: libraryCount });
+    }
+    catch (error) {
+        console.error("An error occured while fetching library count:", error);
+        res.status(500).json({ error: "Something went wrong while fetching library count" });
+    }
+})
+// This is the endpoint for fetching the total number of libraries on the blockchain
+
+
+
 // Library specific routes start here:
 
 app.get('/api/library/:id', async (req, res) => {
     try {
         const libraryId = req.params.id;
         // We are fetching the library id from the request parameters
+
+        const totalLibraries = await libraryContractFactory.methods.getTotalLibraries().call();
+        // We are fetching the total number of libraries on the blockchain
+
+        if (libraryId >= totalLibraries || libraryId < 0 || isNaN(libraryId)) {
+            res.status(400).json({ error: "Invalid library id" });
+            return;
+        }
 
         const libraryAddress = await libraryContractFactory.methods.getLibraryAddress(libraryId).call();
         // This fetches the address of the library we are interested in from the blockchain
@@ -96,12 +120,20 @@ app.post('/api/library/:id/addBook', async (req, res) => {
     try {
         const libraryId = req.params.id;
 
+        const totalLibraries = await libraryContractFactory.methods.getTotalLibraries().call();
+        // We are fetching the total number of libraries on the blockchain
+
+        if (libraryId >= totalLibraries || libraryId < 0 || isNaN(libraryId)) {
+            res.status(400).json({ error: "Invalid library id" });
+            return;
+        }
+
         const libraryAddress = await libraryContractFactory.methods.getLibraryAddress(libraryId).call();
         const libraryContract = new web3.eth.Contract(libraryABI, libraryAddress);
 
         const { name, author, copies, isbn } = req.body;
 
-        await libraryContract.methods.addBook(name, author, copies, isbn).send({ from: senderAddress });
+        await libraryContract.methods.addBook(name, author, copies, isbn).send({ from: senderAddress, gas: 5000000 });
 
         res.json({ message: "Book added successfully" });
     }
@@ -114,6 +146,14 @@ app.post('/api/library/:id/addBook', async (req, res) => {
 app.post('/api/library/:id/registeruser', async (req, res) => {
     try {
         const libraryId = req.params.id;
+
+        const totalLibraries = await libraryContractFactory.methods.getTotalLibraries().call();
+        // We are fetching the total number of libraries on the blockchain
+        if (libraryId >= totalLibraries || libraryId < 0 || isNaN(libraryId)) {
+            res.status(400).json({ error: "Invalid library id" });
+            return;
+        }
+        // We are fetching the total number of libraries on the blockchain
         const libraryAddress = await libraryContractFactory.methods.getLibraryAddress(libraryId).call();
 
         const libraryContract = new web3.eth.Contract(libraryABI, libraryAddress);
@@ -136,6 +176,14 @@ app.get('/api/library/:lib_Id/bookToken/:book_Id', async (req, res) => {
         const LibraryId = req.params.lib_Id;
         const bookId = req.params.book_Id;
         // We are fetching the library id and book id from the request parameters
+
+        const totalLibraries = await libraryContractFactory.methods.getTotalLibraries().call();
+        // We are fetching the total number of libraries on the blockchain
+
+        if (LibraryId >= totalLibraries || LibraryId < 0 || isNaN(LibraryId)) {
+            res.status(400).json({ error: "Invalid library id" });
+            return;
+        }
 
         const libraryContractAddress = await libraryContractFactory.methods.getLibrary(LibraryId).call();
         // This fetches the address of the library we are interested in from the blockchain
@@ -171,6 +219,14 @@ app.get('/api/library/:id/books', async (req, res) => {
 
     try {
         const libraryId = req.params.id;
+
+        const totalLibraries = await libraryContractFactory.methods.getTotalLibraries().call();
+        // We are fetching the total number of libraries on the blockchain
+
+        if (libraryId >= totalLibraries || libraryId < 0 || isNaN(libraryId)) {
+            res.status(400).json({ error: "Invalid library id" });
+            return;
+        }
 
         const libraryAddress = await libraryContractFactory.methods.getLibrary(libraryId).call();
         const librarycontract = new web3.eth.Contract(libraryContractABI, libraryAddress);
