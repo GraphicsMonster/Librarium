@@ -13,8 +13,8 @@ contract Library {
         uint256 maxHolds;
     }
     Lib_Details public libraryDetails;
-    address private bookTokenAddress;
-    address private userAddress;
+    address public bookTokenAddress;
+    address public userAddress;
     // bookTokenAddress is to store the address of the bookToken contract.
     bookToken public bookTokenContract;
     user public userContract;
@@ -46,6 +46,10 @@ contract Library {
 
     function getLibraryDetails() public view returns (Lib_Details memory) {
         return libraryDetails;
+    }
+
+    function getBookTokenAddress() public view returns (address) {
+        return bookTokenAddress;
     }
 
     // We can fetch library Data using this function.
@@ -82,7 +86,7 @@ contract Library {
         userContract.registerUser(_userAddress, name, email);
     }
 
-    function addBooks(
+    function addBook(
         string memory _title,
         string memory _author,
         uint256 _copies,

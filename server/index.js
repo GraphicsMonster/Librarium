@@ -219,20 +219,26 @@ app.get('/api/library/:id/books', async (req, res) => {
 
     try {
         const libraryId = req.params.id;
+        console.log("Library Id: " + libraryId)
 
         const totalLibraries = await libraryContractFactory.methods.getTotalLibraries().call();
         // We are fetching the total number of libraries on the blockchain
 
-        if (libraryId >= totalLibraries || libraryId < 0 || isNaN(libraryId)) {
+        if (libraryId > totalLibraries || libraryId < 0 || isNaN(libraryId)) {
             res.status(400).json({ error: "Invalid library id" });
             return;
         }
 
-        const libraryAddress = await libraryContractFactory.methods.getLibrary(libraryId).call();
-        const librarycontract = new web3.eth.Contract(libraryContractABI, libraryAddress);
+        const libraryAddress = await libraryContractFactory.methods.getLibraryAddress(libraryId).call();
+        const librarycontract = new web3.eth.Contract(libraryABI, libraryAddress);
         //Fetching address and creating instance of library contract
+        console.log("Library Address: " + libraryAddress);
 
-        const books = await librarycontract.bookTokenContract.methods.getBooks().call();
+        const bookTokenContractAddress = await librarycontract.methods.getBookTokenAddress().call();
+        const bookTokenContract = new web3.eth.Contract(bookTokenABI, bookTokenContractAddress);
+        // Fetching address and creating instance of book token contract which is a part of the library contract
+
+        const books = await bookTokenContract.methods.getBooks().call();
         //Fetching books from the blockchain. This function needs some work. I think something's wrong with it.
 
         res.json(books);
