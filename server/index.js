@@ -12,7 +12,6 @@ const web3 = new Web3(web3Provider);
 // This file is server side, so we need to use the web3 library to connect to the blockchain
 // After connecting to the blockchain we will fetch data from the blockchain and send it to the client side
 // This script serves as the intermediary between the client side and the blockchain.
-// Let's code!
 
 const LibraryContractFactory = require('../build/contracts/libraryContractFactory.json');
 const BookToken = require('../build/contracts/bookToken.json');
@@ -253,7 +252,7 @@ app.get('/api/library/:id/books', async (req, res) => {
 
     //Oh fuck this is confusing. I think the way i have made the contracts communicate is pretty absurd lmao. [FIXED]
     // so this route handles the case where we ask for all the books in a library's inventory
-    // This might cause issues because I think the getBooks function returns an array of a special type of construct type and not an object
+    // This might cause issues because I think the getBooks function returns an array of a special struct type and not an object
     // Should get clearer while testing
 })
 

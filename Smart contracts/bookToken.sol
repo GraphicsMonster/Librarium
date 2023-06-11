@@ -92,4 +92,12 @@ contract bookToken {
             }
         }
     }
+
+    function getBooks() public view returns (Book[] memory) {
+        Book[] memory _books = new Book[](totalBooks);
+        for (uint256 id = 1; id <= totalBooks; id++) {
+            _books[id - 1] = books[id];
+        }
+        return _books;
+    }
 }

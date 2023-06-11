@@ -48,6 +48,11 @@ contract Library {
         return libraryDetails;
     }
 
+    // We can fetch library Data using this function.
+    // Routing setup for this => Library Id will be passed through query params => Library address will be fetched using the
+    // function defined in the library factory contract => Using this address we can connect to this specific instance of
+    // library contract => then this function will be called using instance.getLibraryDetails().call()
+
     function getBookTokenAddress() public view returns (address) {
         return bookTokenAddress;
     }
@@ -55,11 +60,6 @@ contract Library {
     function getUserContratAddress() public view returns (address) {
         return userAddress;
     }
-
-    // We can fetch library Data using this function.
-    // Routing setup for this => Library Id will be passed through query params => Library address will be fetched using the
-    // function defined in the library factory contract => Using this address we can connect to this specific instance of
-    // library contract => then this function will be called using instance.getLibraryDetails().call()
 
     mapping(address => uint256) public bookBalance;
 
