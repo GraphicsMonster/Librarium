@@ -48,22 +48,27 @@ contract Library {
         return libraryDetails;
     }
 
-    function getBookTokenAddress() public view returns (address) {
-        return bookTokenAddress;
-    }
-
     // We can fetch library Data using this function.
     // Routing setup for this => Library Id will be passed through query params => Library address will be fetched using the
     // function defined in the library factory contract => Using this address we can connect to this specific instance of
     // library contract => then this function will be called using instance.getLibraryDetails().call()
 
+    function getBookTokenAddress() public view returns (address) {
+        return bookTokenAddress;
+    }
+
+    function getUserContratAddress() public view returns (address) {
+        return userAddress;
+    }
+
     mapping(address => uint256) public bookBalance;
 
-    function getbookBalance(
-        address _userAddress
-    ) public view returns (uint256) {
-        return bookBalance[_userAddress];
-    }
+    // function getbookBalance(
+    //     address _userAddress
+    // ) public view returns (uint256) {
+    //     return bookBalance[_userAddress];
+    // }
+    // Instead of creating this function and hence causing a puff in the size of the contract we can extrat this information from the user struct itself.
 
     mapping(address => mapping(uint256 => bool)) public booksIssued;
 

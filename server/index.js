@@ -12,7 +12,6 @@ const web3 = new Web3(web3Provider);
 // This file is server side, so we need to use the web3 library to connect to the blockchain
 // After connecting to the blockchain we will fetch data from the blockchain and send it to the client side
 // This script serves as the intermediary between the client side and the blockchain.
-// Let's code!
 
 const LibraryContractFactory = require('../build/contracts/libraryContractFactory.json');
 const BookToken = require('../build/contracts/bookToken.json');
@@ -160,7 +159,7 @@ app.post('/api/library/:id/registeruser', async (req, res) => {
 
         const { address, name, email } = req.body;
 
-        await libraryContract.methods.registerUser(address, name, email).send({ from: senderAddress });
+        await libraryContract.methods.registerUser(address, name, email).send({ from: senderAddress, gas: 5000000 });
         //user is registered on the blockchain
 
         res.json({ message: "User registered successfully" });
@@ -188,11 +187,15 @@ app.get('/api/library/:lib_Id/bookToken/:book_Id', async (req, res) => {
         const libraryContractAddress = await libraryContractFactory.methods.getLibrary(LibraryId).call();
         // This fetches the address of the library we are interested in from the blockchain
 
-        const libraryContract = new web3.eth.Contract(libraryContractABI, libraryContractAddress);
-        // We are creating an instance of the library contract we are interested in
+        const libraryContract = new web3.eth.Contract(libraryABI, libraryContractAddress);
+        // We are creating an instance of the library contract we are interested 
 
-        const bookDetails = await libraryContract.bookTokenContract.methods.getBook(bookId).call();
+        const bookTokenAddress = await libraryContract.methods.getBookTokenAddress(bookId).call();
+        const bookTokenContract = new web3.eth.Contract(bookTokenABI, bookTokenAddress);
+
+        const bookDetails = await bookTokenContract.methods.getBookDetails(bookId).call();
         // We are fetching the book details from the blockchain
+
         const response = {
             bookId: bookId,
             name: bookDetails[0],
@@ -249,7 +252,7 @@ app.get('/api/library/:id/books', async (req, res) => {
 
     //Oh fuck this is confusing. I think the way i have made the contracts communicate is pretty absurd lmao. [FIXED]
     // so this route handles the case where we ask for all the books in a library's inventory
-    // This might cause issues because I think the getBooks function returns an array of a special type of construct type and not an object
+    // This might cause issues because I think the getBooks function returns an array of a special struct type and not an object
     // Should get clearer while testing
 })
 
@@ -258,9 +261,14 @@ app.get('/api/library/:LibId/users', async (req, res) => {
         const lib_Id = req.params.LibId;
 
         const libraryContractAddress = await libraryContractFactory.methods.getLibrary(lib_Id).call();
-        const libraryContract = new web3.eth.Contract(libraryContractABI, libraryContractAddress);
+        const libraryContract = new web3.eth.Contract(libraryABI, libraryContractAddress);
 
-        const users = await libraryContract.userContract.methods.getUsers().call();
+        const userContractAddress = await libraryContract.methods.getUserContractAddress().call();
+        const userContract = new web3.eth.Contracts(userABI, userContractAddress);
+        // Fetches the user contract's address inside of the library contract and then creates an instance of it here
+
+        const users = await userContract.methods.getUsers().call();
+        // Fetches the users from the user contract
 
         res.json(users);
     }
