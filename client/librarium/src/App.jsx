@@ -5,6 +5,7 @@ import UserLogin from './pages/UserLogin/UserLogin.jsx'
 import LibraryLogin from './pages/LibraryManagementLogin/LibraryManagement.jsx';
 import LibraryDashboard from './pages/LibraryDashboard/LibraryDashboard.jsx';
 import UserDashboard from './pages/UserDashboard/UserDashboard.jsx';
+import UserRegistration from './pages/UserRegistration/UserRegistration.jsx';
 import LibraryRegistration from './pages/LibraryRegistration/LibraryRegistration.jsx';
 import './App.css'
 
@@ -34,6 +35,11 @@ const App = () =>
   {
     path: '/library/registration',
     element: <LibraryRegistration />,
+  },
+
+  {
+    path: 'user/registration',
+    element: <UserRegistration />,
   }
   
 ])
