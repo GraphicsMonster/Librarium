@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const cors =  require('cors');
 const bodyParser = require('body-parser');
 
 const Web3 = require('web3');
@@ -35,10 +36,12 @@ const libraryContractFactory = new web3.eth.Contract(libraryContractFactoryABI, 
 app.use(bodyParser.json());
 // this makes json bodies to get parsed and then compared in our routes\
 
+app.use(cors());
+
 app.use(bodyParser.urlencoded({ extended: true }));
 // this makes url encoded bodies to get parsed and then compared in our routes\
 
-const senderAddress = '0x6a590fe2f684421aab85220fedd19561409798f6';
+const senderAddress = '0x07b17e1c6e6284372ab350bc21a7f28b3d2da3b1';
 
 app.post('/api/library/create', async (req, res) => {
     try {

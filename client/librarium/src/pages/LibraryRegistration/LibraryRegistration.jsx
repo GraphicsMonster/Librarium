@@ -3,11 +3,11 @@ import {Link} from 'react-router-dom'
 import './LibraryRegistration.css'
 
 const credentials = {
-    Library_name: '',
-    Library_address: '',
-    library_email: '',
-    Library_contact: '',
-    Library_MaxHolds: 5
+    name: '',
+    location: '',
+    email: '',
+    phone: '',
+    maxhold: 5
     // Using a default value of 5 for now. We can change it later.
 }
 
@@ -16,18 +16,19 @@ const db_credentials = {
     Library_password: ''
 }
 
-const onSubmit = () => {
+const onSubmit = async() => {
     //this function will take the input from the input fields and store it in the credentials object.
     db_credentials.Library_id = document.getElementById('lib-id').value;
     db_credentials.Library_password = document.getElementById('lib-password').value;
     // The credentials to send to the database once we have managed to set up once
 
-    credentials.Library_name = document.getElementById('lib-name').value;
-    credentials.Library_address = document.getElementById('lib-location').value;
-    credentials.library_email = document.getElementById('lib-email').value;
-    credentials.Library_contact = document.getElementById('lib-number').value;
+    credentials.name = document.getElementById('lib-name').value;
+    credentials.location = document.getElementById('lib-location').value;
+    credentials.email = document.getElementById('lib-email').value;
+    credentials.phone = document.getElementById('lib-number').value;
     // The credentials to send to the blockchain as soon as the user hits register.
-    postData();
+    // I've updated credential elements to match the ones in the api endpoint. We can change them later if we want to.
+    await postData();
 }
 
 const getCredentials = () => {
@@ -37,7 +38,7 @@ const getCredentials = () => {
 
 const postData = async () => {
     try {
-        const response = await fetch('/api/library/create', {
+        const response = await fetch('http://localhost:3000/api/library/create', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
