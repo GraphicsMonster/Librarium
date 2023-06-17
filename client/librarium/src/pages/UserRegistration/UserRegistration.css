@@ -18,7 +18,7 @@
     max-width: 800px;
   }
   
-  .row {
+ .row {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -46,7 +46,7 @@
     font-size: 16px;
   }
   
-  .submit-button {
+  .user-registration-form .submit-button {
     background-color: #4CAF50;
     color: #8f8f8f;
     padding: 14px 20px;
@@ -58,7 +58,7 @@
     font-size: 16px;
   }
   
-  .submit-button:hover {
+  .user-registration-form .submit-button:hover {
     background-color: #45a049;
     color: white;
   }

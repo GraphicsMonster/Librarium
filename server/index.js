@@ -63,7 +63,9 @@ app.post('/api/library/create', async (req, res) => {
 
 app.get('/api/library/count', async (req, res) => {
     try {
-        const libraryCount = await libraryContractFactory.methods.getTotalLibraries().call();
+        const gasEstimate = await libraryContractFactory.methods.getTotalLibraries().estimateGas();
+        const gasLimit = gasEstimate * 2;
+        const libraryCount = await libraryContractFactory.methods.getTotalLibraries().call({ gas: gasLimit });
         // Fetching library count from the blockchain
 
         res.json({ libraryCount: libraryCount });

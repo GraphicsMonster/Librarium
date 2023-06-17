@@ -1,0 +1,20 @@
+.addbook-form {
+    width: 50vw;
+    margin: 1rem auto;
+    padding: 1rem;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    font-family: "Martian Mono", monospace;
+    display: flex;
+    flex-direction: column; /* Change the layout to a column */
+  }
+
+  .addbook-form .row {
+    display: flex;
+    justify-content: center; /* Adjust label alignment */
+    align-items: center;
+    width: 100%;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
