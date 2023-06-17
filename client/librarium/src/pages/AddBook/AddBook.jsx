@@ -1,6 +1,8 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import './AddBook.css'
+import LibraryDashboard from '../LibraryDashboard/LibraryDashboard'
 
 const data = {
     name: '',
@@ -48,8 +50,8 @@ const AddBook = () => {
             console.log(error);
         }
     }
-
-
+        
+    
     return (
         <>
         <div className='addbook-form'>
@@ -87,8 +89,13 @@ const AddBook = () => {
                 </div>
             </div>
         </div>
+
+        <div className='addbook-footer'>
+            <p className='addbook-footer-text'>Back to Library <Link to='/library/dashboard'>Dashboard</Link> </p>
+        </div>
         </>
     )
-}
+
+    }
 
 export default AddBook

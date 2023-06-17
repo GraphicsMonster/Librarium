@@ -227,6 +227,7 @@ app.get('/api/library/:id/books', async (req, res) => {
 
     try {
         const libraryId = req.params.id;
+        console.log("Library Id: " + libraryId)
 
         const totalLibraries = await libraryContractFactory.methods.getTotalLibraries().call();
         // We are fetching the total number of libraries on the blockchain
@@ -239,6 +240,7 @@ app.get('/api/library/:id/books', async (req, res) => {
         const libraryAddress = await libraryContractFactory.methods.getLibraryAddress(libraryId).call();
         const librarycontract = new web3.eth.Contract(libraryABI, libraryAddress);
         //Fetching address and creating instance of library contract
+        console.log("Library Address: " + libraryAddress);
 
         const bookTokenContractAddress = await librarycontract.methods.getBookTokenAddress().call();
         const bookTokenContract = new web3.eth.Contract(bookTokenABI, bookTokenContractAddress);
