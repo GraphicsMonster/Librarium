@@ -86,10 +86,11 @@ app.get('/api/library/:id', async (req, res) => {
         const libraryId = req.params.id;
         // We are fetching the library id from the request parameters
 
-        const totalLibraries = await libraryContractFactory.methods.getTotalLibraries().call();
+        const totalLibraries = await libraryContractFactory.methods.getTotalLibraries().call({gas: 5000000});
         // We are fetching the total number of libraries on the blockchain
 
-        if (libraryId >= totalLibraries || libraryId < 0 || isNaN(libraryId)) {
+        if (libraryId > totalLibraries || libraryId < 0 || isNaN(libraryId)) {
+            // The issue is that I put libraryId >= totalLibraries instead of libraryId > totalLibraries. I am dumb.
             res.status(400).json({ error: "Invalid library id" });
             return;
         }
