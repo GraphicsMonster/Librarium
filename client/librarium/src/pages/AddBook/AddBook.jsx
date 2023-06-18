@@ -1,8 +1,8 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import './AddBook.css'
-import LibraryDashboard from '../LibraryDashboard/LibraryDashboard'
 
 const data = {
     name: '',
@@ -15,6 +15,16 @@ const data = {
 const AddBook = () => {
 
     const {id} = useParams();
+    const [libraryExists, setLibraryExists] = useState(false);
+
+    useEffect(() => {
+        const checkLibraryExists = async() => {
+            const response = await fetch(`http://localhost:3000/api/library/${id}`);
+            setLibraryExists(response.ok);
+        };
+
+        checkLibraryExists();
+    }, [id]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -49,6 +59,14 @@ const AddBook = () => {
         catch(error) {
             console.log(error);
         }
+    }
+
+    if(!libraryExists) {
+        return (
+            <div className='addbook-error'>
+                <p className='addbook-error-text'>Library does not exist</p>
+            </div>
+        )
     }
         
     
