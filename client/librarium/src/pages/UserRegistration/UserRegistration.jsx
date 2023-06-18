@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom'
 import {useParams} from 'react-router-dom';
+import {useEffect, useState} from 'react';
 import './UserRegistration.css';
 
 const user_credentials = {
@@ -14,45 +15,69 @@ const db_user_credentials = {
   password: ''
 };
 
-const onSubmit = async () => {
-  user_credentials.username = document.getElementById('username').value;
-  user_credentials.email = document.getElementById('user-email').value;
-  user_credentials.password = document.getElementById('password').value;
-
-  await sendData();
-};
-
-const getCredentials = () => {
-  // This function will return the user credentials
-  return user_credentials;
-};
-
-const sendData = async () => {
-  try {
-    const {id} = useParams();
-    const url = `http://localhost:3000/api/library/${id}/registeruser`
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(getCredentials())
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      console.log(data);
-    }
-    else {
-      console.log('Failed to register user');
-    }
-  }
-  catch (error) {
-    console.log(error);
-  }
-}
-
 const UserRegistration = () => {
+
+  const {id} = useParams();
+  const [libraryExists, setLibraryExists] = useState(false);
+
+  useEffect(() => {
+    const checkLibraryExists = async() => {
+      const response = await fetch(`http://localhost:3000/api/library/${id}`);
+      setLibraryExists(response.ok);
+    };
+
+    checkLibraryExists();
+  }, [id]);
+
+  const onSubmit = async () => {
+    user_credentials.address = document.getElementById('address').value;
+    user_credentials.email = document.getElementById('user-email').value;
+    user_credentials.name = document.getElementById('name').value;
+  
+    db_user_credentials.username = document.getElementById('username').value;
+    db_user_credentials.password = document.getElementById('password').value;
+  
+    await sendData();
+  };
+  
+  const getCredentials = () => {
+    // This function will return the user credentials
+    return user_credentials;
+  };
+  
+  const sendData = async () => {
+    try {
+      const url = `http://localhost:3000/api/library/${id}/registeruser`
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(getCredentials())
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+      }
+      else {
+        console.log('Failed to register user');
+      }
+    }
+    catch (error) {
+      console.log(error);
+    }
+  };
+
+
+  if(!libraryExists) {
+    return (
+      <div className='registration-error'>
+        <h1>Library does not exist</h1>
+      </div>
+    )
+  }
+  
   return (
     <div className='user-registration-form'>
       <div className='user-registration-form-container'>

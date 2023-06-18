@@ -128,7 +128,7 @@ app.post('/api/library/:id/addBook', async (req, res) => {
         const totalLibraries = await libraryContractFactory.methods.getTotalLibraries().call();
         // We are fetching the total number of libraries on the blockchain
 
-        if (libraryId >= totalLibraries || libraryId < 0 || isNaN(libraryId)) {
+        if (libraryId > totalLibraries || libraryId < 0 || isNaN(libraryId)) {
             res.status(400).json({ error: "Invalid library id" });
             return;
         }
@@ -154,7 +154,7 @@ app.post('/api/library/:id/registeruser', async (req, res) => {
 
         const totalLibraries = await libraryContractFactory.methods.getTotalLibraries().call();
         // We are fetching the total number of libraries on the blockchain
-        if (libraryId >= totalLibraries || libraryId < 0 || isNaN(libraryId)) {
+        if (libraryId > totalLibraries || libraryId < 0 || isNaN(libraryId)) {
             res.status(400).json({ error: "Invalid library id" });
             return;
         }
@@ -185,7 +185,7 @@ app.get('/api/library/:lib_Id/bookToken/:book_Id', async (req, res) => {
         const totalLibraries = await libraryContractFactory.methods.getTotalLibraries().call();
         // We are fetching the total number of libraries on the blockchain
 
-        if (LibraryId >= totalLibraries || LibraryId < 0 || isNaN(LibraryId)) {
+        if (LibraryId > totalLibraries || LibraryId < 0 || isNaN(LibraryId)) {
             res.status(400).json({ error: "Invalid library id" });
             return;
         }

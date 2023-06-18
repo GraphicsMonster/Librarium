@@ -44,7 +44,7 @@ const App = () =>
   },
 
   {
-    path: 'user/registration',
+    path: 'library/:id/user/registration',
     element: <UserRegistration />,
   }
   
