@@ -29,12 +29,12 @@ const App = () =>
   },
 
   {
-    path: '/library/dashboard',
+    path: '/library/:id/dashboard',
     element: <LibraryDashboard />,
   },
 
   {
-    path: '/user/dashboard',
+    path: '/library/:lib_Id/user/:user_Id/dashboard',
     element: <UserDashboard />,
   },
 

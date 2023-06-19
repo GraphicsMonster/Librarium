@@ -285,6 +285,34 @@ app.get('/api/library/:LibId/users', async (req, res) => {
     // This route handles the case where we wanna retrieve the information we have about all the users.
 })
 
+app.get('/api/library/:lib_Id/user/:user_Id', async (req, res) => {
+    try {
+        const lib_Id = req.params.lib_Id;
+        const user_Id = req.params.user_Id;
+
+        const libraryContractAddress = await libraryContractFactory.methods.getLibrary(lib_Id).call();
+        const libraryContract = new web3.eth.Contract(libraryABI, libraryContractAddress);
+
+        const userContractAddress = await libraryContract.methods.getUserContractAddress().call();
+        // check if this function exists
+        const userContract = new web3.eth.Contracts(userABI, userContractAddress);
+
+        const userAddress = await userContract.methods.getUserAddressById(user_Id).call();
+        let user;
+        if (userAddress != "0x0000000000000000000000000000000000000000") {
+            user = await userContract.methods.getUser(userAddress).call();
+          }
+        else {
+            console.log("user does not exist")
+          }
+          
+        res.json(user);
+    }
+    catch(error) {
+        res.status(500).json({ error: "Something went wrong while fetching user" });
+    }
+})
+
 app.get('/', (req, res) => {
     res.send("Welcome to the Librarium API");
 });

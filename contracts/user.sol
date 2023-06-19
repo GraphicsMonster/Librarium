@@ -26,10 +26,17 @@ contract user {
         string memory _name,
         string memory _email
     ) public {
-        require(
-            !userExists(_userAddress),
-            "User with this address already exists"
-        );
+
+    //     if(totalUsers != 0){
+    //     for (uint256 i = 1; i <= totalUsers; i++) {
+    //     if (
+    //         userAddressById[i] == _userAddress
+    //     ) {
+    //         revert("User with the same name and email already exists");
+    //     }
+    // }
+    //     }
+
         users[_userAddress] = User(_name, _email, 0, new uint256[](0));
         totalUsers = totalUsers + 1;
         userAddressById[totalUsers] = _userAddress;
@@ -67,6 +74,10 @@ contract user {
         return users[_userAddress];
     }
 
+    // function getUserAddress(uint256 id) public view returns (address) {
+    //     return userAddressById[id];
+    // }
+
     function getUsers() public view returns (User[] memory) {
         address temp_address;
         User[] memory _users = new User[](totalUsers);
@@ -77,11 +88,10 @@ contract user {
         return _users;
     }
 
-    function userExists(address _userAddress) public view returns (bool) {
-        if (bytes(users[_userAddress].name).length > 0) {
-            return true;
-        } else {
-            return false;
+    function getUserAddressById(uint256 id) public view returns (address) {
+        if (userAddressById[id] != address(0)){
+            return userAddressById[id];
         }
+        return address(0);
     }
 }
