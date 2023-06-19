@@ -57,7 +57,7 @@ contract Library {
         return bookTokenAddress;
     }
 
-    function getUserContratAddress() public view returns (address) {
+    function getUserContractAddress() public view returns (address) {
         return userAddress;
     }
 
