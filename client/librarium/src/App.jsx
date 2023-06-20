@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import UserLogin from './pages/UserLogin/UserLogin.jsx'
 import LibraryLogin from './pages/LibraryManagementLogin/LibraryManagement.jsx';
+import AllLibraries from './pages/AllLibraries/AllLibraries.jsx';
 import AddBook from './pages/AddBook/AddBook.jsx'
 import LibraryDashboard from './pages/LibraryDashboard/LibraryDashboard.jsx';
 import UserDashboard from './pages/UserDashboard/UserDashboard.jsx';
@@ -21,6 +22,11 @@ const App = () =>
   {
     path: '/library',
     element: <LibraryLogin />,
+  },
+
+  {
+      path: '/library/all',
+      element: <AllLibraries />,
   },
 
   {
