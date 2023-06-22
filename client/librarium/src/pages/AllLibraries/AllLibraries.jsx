@@ -6,7 +6,7 @@ import "./AllLibraries.css"
 const AllLibraries = () => {
 
     const [totalLibs, setTotalLibs] = useState(0);
-    const [Lib_details, setLibDetails] = useState([]); // [ {id: 1, name: 'ABC Library', location: 'XYZ', email: 'abc@xyz', phone: '1234567890', maxhold: 5}
+    const [Lib_details, setLibDetails] = useState([]);
     const [LibrariesExist, setLibrariesExist] = useState(false);
 
     useEffect(() => {
@@ -15,7 +15,6 @@ const AllLibraries = () => {
                 const response = await fetch(`http://localhost:3000/api/library/count`)
                 const responseJson = await response.json();
                 setTotalLibs(responseJson.libraryCount);
-                console.log(totalLibs)
                 if(totalLibs > 0) {
                     setLibrariesExist(true);
                     await fetchLibDetails();
@@ -23,7 +22,7 @@ const AllLibraries = () => {
             };
     
             checkLibrariesExist();
-    }, []);
+    }, [totalLibs]);
 
     const fetchLibDetails = async () => {
 
@@ -64,12 +63,14 @@ const AllLibraries = () => {
     return (
         <div className="library-list">
           {Lib_details.map((library) => (
-            <div key={library.id} className="library">
-              <h2>{library.name}</h2>
-              <p>{library.location}</p>
-              <p>Email: {library.email}</p>
-              <p>Contact No. : {library.phone}</p>
-              <p>Maximum No. of Holds allowed at a time: {library.maxhold}</p>
+            <div key={library.id} className="library-card">
+              <h2 className="library-name">{library.name}</h2>
+              <div className="library-info">
+                <p className="library-location">Location: {library.location}</p>
+                <p className="library-email">Email: {library.email}</p>
+                <p className="library-phone">Contact No.: {library.phone}</p>
+                <p className="library-maxhold">Maximum No. of Holds allowed at a time: {library.maxhold}</p>
+              </div>
             </div>
           ))}
         </div>
