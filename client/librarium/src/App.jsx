@@ -1,9 +1,9 @@
 import * as React from 'react'
-import * as ReactDOM from 'react-dom'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import UserLogin from './pages/UserLogin/UserLogin.jsx'
 import LibraryLogin from './pages/LibraryManagementLogin/LibraryManagement.jsx';
 import AllLibraries from './pages/AllLibraries/AllLibraries.jsx';
+import AllUsers from './pages/AllUsers/AllUsers.jsx'
 import AddBook from './pages/AddBook/AddBook.jsx'
 import LibraryDashboard from './pages/LibraryDashboard/LibraryDashboard.jsx';
 import UserDashboard from './pages/UserDashboard/UserDashboard.jsx';
@@ -27,6 +27,11 @@ const App = () =>
   {
       path: '/library/all',
       element: <AllLibraries />,
+  },
+  
+  {
+      path: '/library/:id/users/all',
+      element: <AllUsers />,
   },
 
   {

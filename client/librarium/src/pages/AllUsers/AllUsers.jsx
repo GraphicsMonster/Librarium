@@ -5,39 +5,51 @@ import { Link, useParams } from 'react-router-dom'
 
 const AllUsers = () => {
     const {id} = useParams()
+    const [libraryExists, setLibraryExists] = useState(false)
     const [usersExist, setUsersExist] = useState(false)
     const [users, setUsers] = useState([])
 
     useEffect(() => {
 
+    const checkLibraryExists = async() => {
+        const response = await fetch(`http://localhost:3000/api/library/${id}`)
+        if (response.ok) {
+            setLibraryExists(true)
+        }
+
+    }
     const checkUsersExist = async () => {
-        const response = await fetch(`http://localhost:3000/library/${id}/users`)
-        const responseJson = response.json()
+        const response = await fetch(`http://localhost:3000/api/library/${id}/users`)
+        const responseJson = await response.json()
+        console.log(responseJson)
         if (responseJson.length > 0) {
             setUsersExist(true)
             await fetchUsers()
         }
     }
 
+    checkLibraryExists();
     checkUsersExist();
 
         }, 
     
-    []);
+    [libraryExists, usersExist, id]);
 
     const fetchUsers = async () => {
 
-        const response = await fetch(`http://localhost:3000/library/${id}/users`)
+        const response = await fetch(`http://localhost:3000/api/library/${id}/users`)
         const responseJson = await response.json()
-        const request = []
-        for (let i = 0; i < responseJson.length; i++) {
-            request.push(fetch(`http://localhost:3000/library/${id}/user/${i+1}`))
-        }
+        const users = responseJson.map((user) => ({name: user.name, email: user.email, bookbalance: user.bookBalance, borrowedBooks: user.borrowedBooks}))
+        setUsers(users)
 
-        const responses = await Promise.all(request)
-        const details = await Promise.all(responses.map((response) => response.json()))
-        setUsers(details)
-
+    }
+    
+    if(!libraryExists) {
+        return (
+            <div className='no-library'>
+                <h1>There is no library registered on the network with the id: {id}</h1>
+            </div>
+        )
     }
 
     if(!usersExist) {
@@ -50,7 +62,7 @@ const AllUsers = () => {
 
     return (
         <div className='all-users'>
-            <p>{users}</p>
+            <p>{users[0].name}</p>
         </div>
     )
 }
