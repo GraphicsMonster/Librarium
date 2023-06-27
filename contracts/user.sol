@@ -81,9 +81,9 @@ contract user {
     function getUsers() public view returns (User[] memory) {
         address temp_address;
         User[] memory _users = new User[](totalUsers);
-        for (uint256 i = 0; i < totalUsers; i++) {
+        for (uint256 i = 1; i <= totalUsers; i++) {
             temp_address = userAddressById[i];
-            _users[i] = users[temp_address];
+            _users[i-1] = users[temp_address];
         }
         return _users;
     }

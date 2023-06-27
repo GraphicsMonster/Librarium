@@ -21,7 +21,6 @@ const AllUsers = () => {
     const checkUsersExist = async () => {
         const response = await fetch(`http://localhost:3000/api/library/${id}/users`)
         const responseJson = await response.json()
-        console.log(responseJson)
         if (responseJson.length > 0) {
             setUsersExist(true)
             await fetchUsers()
@@ -62,7 +61,7 @@ const AllUsers = () => {
 
     return (
         <div className='all-users'>
-            <p>{users[0].name}</p>
+            <p>Looks like this bloody works!!!</p>
         </div>
     )
 }

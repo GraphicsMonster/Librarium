@@ -265,18 +265,29 @@ app.get('/api/library/:id/books', async (req, res) => {
 app.get('/api/library/:LibId/users', async (req, res) => {
     try {
         const lib_Id = req.params.LibId;
-
-        const libraryContractAddress = await libraryContractFactory.methods.getLibrary(lib_Id).call();
+        const libraryContractAddress = await libraryContractFactory.methods.getLibraryAddress(lib_Id).call();
         const libraryContract = new web3.eth.Contract(libraryABI, libraryContractAddress);
 
         const userContractAddress = await libraryContract.methods.getUserContractAddress().call();
-        const userContract = new web3.eth.Contracts(userABI, userContractAddress);
+        const userContract = new web3.eth.Contract(userABI, userContractAddress);
+
         // Fetches the user contract's address inside of the library contract and then creates an instance of it here
 
         const users = await userContract.methods.getUsers().call();
-        // Fetches the users from the user contract
 
-        res.json(users);
+        const parsedUsers = await users.map(user => {
+            return {
+                name: user[0],
+                email: user[1],
+                bookBalance: user[2],
+                booksBorrowed: user[3],
+            }
+        })
+        // This is a bit confusing. The getUsers function returns an array of a special struct type. So we are mapping over it and creating an object for each user
+
+        res.json(parsedUsers);
+
+        // Fetches the users from the user contract and sends it to the client side
     }
     catch (error) {
         res.status(500).json({ error: "Something went wrong while fetching users" })
@@ -305,8 +316,8 @@ app.get('/api/library/:lib_Id/user/:user_Id', async (req, res) => {
                 userId: user_Id,
                 name: userDetails[0],
                 email: userDetails[1],
-                phone: userDetails[2],
-                address: userDetails[3]
+                bookBalance: userDetails[2],
+                BorrwedBooksID: userDetails[3]
             }
 
             res.json(response);

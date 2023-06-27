@@ -29,7 +29,8 @@ const UserRegistration = () => {
     checkLibraryExists();
   }, [id]);
 
-  const onSubmit = async () => {
+  const onSubmit = async (event) => {
+    event.preventDefault()
     user_credentials.address = document.getElementById('address').value;
     user_credentials.email = document.getElementById('user-email').value;
     user_credentials.name = document.getElementById('name').value;
