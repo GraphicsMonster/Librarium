@@ -16033,12 +16033,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x6D6fFF0c13E5ec2A485Aefb33c3da771De9Ea837",
-      "transactionHash": "0x93577e800aeadd05c126accb198d6f55d5dea610afe06e3b9292405576e6f08b"
+      "address": "0x354d1f9a99248394a7a2D405cDf865eD6e98e860",
+      "transactionHash": "0x84d4332cf7ca5863e5e7b59422f573442c7bbefa5d8693c89f6f8fae3ae49aee"
     }
   },
   "schemaVersion": "3.4.14",
-  "updatedAt": "2023-06-27T18:26:28.987Z",
+  "updatedAt": "2023-06-27T18:59:27.788Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

@@ -19,6 +19,7 @@ const UserRegistration = () => {
 
   const {id} = useParams();
   const [libraryExists, setLibraryExists] = useState(false);
+  const [isValidAddress, setIsValidAddress] = useState(false);
 
   useEffect(() => {
     const checkLibraryExists = async() => {
@@ -37,9 +38,19 @@ const UserRegistration = () => {
   
     db_user_credentials.username = document.getElementById('username').value;
     db_user_credentials.password = document.getElementById('password').value;
-  
+    
+    // Simple Ethereum address validation
+    const addressRegex = /^(0x)?[0-9a-fA-F]{40}$/;
+    setIsValidAddress(addressRegex.test(user_credentials.address));
+
+    if(isValidAddress) {
     await sendData();
+    }
+    else {
+      console.log('Invalid address');
+    }
   };
+
   
   const getCredentials = () => {
     // This function will return the user credentials
@@ -99,7 +110,7 @@ const UserRegistration = () => {
         <div className='row'>
           <div className='col-25 user-address'>Ethereum Address</div>
           <div className='col-75 user-input'>
-            <input type='text' id='address' name='address' placeholder='Enter your Ethereum Address' />
+            <input type='text' id='address' name='address' placeholder='Enter your Ethereum Address'/>
           </div>
         </div>
 
