@@ -20,6 +20,7 @@ const UserRegistration = () => {
   const {id} = useParams();
   const [libraryExists, setLibraryExists] = useState(false);
   const [isValidAddress, setIsValidAddress] = useState(false);
+  const [submitClicked, setSubmitClicked] = useState(false);
 
   useEffect(() => {
     const checkLibraryExists = async() => {
@@ -38,18 +39,37 @@ const UserRegistration = () => {
   
     db_user_credentials.username = document.getElementById('username').value;
     db_user_credentials.password = document.getElementById('password').value;
-    
+
     // Simple Ethereum address validation
     const addressRegex = /^(0x)?[0-9a-fA-F]{40}$/;
     setIsValidAddress(addressRegex.test(user_credentials.address));
 
-    if(isValidAddress) {
-    await sendData();
-    }
-    else {
-      console.log('Invalid address');
-    }
+    setSubmitClicked(true);
   };
+
+  useEffect(() => {
+
+    if(submitClicked && isValidAddress) {
+
+    const sendDataWrapper = async () => {
+      await sendData();
+    };
+
+   sendDataWrapper();
+
+    setSubmitClicked(false);
+    setIsValidAddress(false);
+    // set the submitClicked state var to false once the action is performed so that when the button is clicked again the state turns to true
+    }
+
+    else if(submitClicked && !isValidAddress) {
+      // handles the case when the user enters an invalid address
+      console.log('Invalid address');
+      setSubmitClicked(false);
+    }
+    
+  }, [isValidAddress, submitClicked]);
+  
 
   
   const getCredentials = () => {
