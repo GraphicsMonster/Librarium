@@ -21,6 +21,7 @@ const UserRegistration = () => {
   const [libraryExists, setLibraryExists] = useState(false);
   const [isValidAddress, setIsValidAddress] = useState(false);
   const [submitClicked, setSubmitClicked] = useState(false);
+  const [ethAddressExists, setEthAddressExists] = useState(false);
 
   useEffect(() => {
     const checkLibraryExists = async() => {
@@ -30,6 +31,21 @@ const UserRegistration = () => {
 
     checkLibraryExists();
   }, [id]);
+
+  const checkAddressExists = async (address) => {
+    // This function will check if the address exists in the database
+
+    const url = `http://localhost:3000/api/library/${id}/users/checkaddress?address=${address}`;
+    const response = await fetch(url);
+
+    if(response.ok) {
+      setEthAddressExists(true);
+    }
+    else {
+      setEthAddressExists(false);
+    }
+  };
+
 
   const onSubmit = async (event) => {
     event.preventDefault()
@@ -43,13 +59,14 @@ const UserRegistration = () => {
     // Simple Ethereum address validation
     const addressRegex = /^(0x)?[0-9a-fA-F]{40}$/;
     setIsValidAddress(addressRegex.test(user_credentials.address));
+    checkAddressExists(user_credentials.address);
 
     setSubmitClicked(true);
   };
 
   useEffect(() => {
 
-    if(submitClicked && isValidAddress) {
+    if(submitClicked && isValidAddress && !ethAddressExists) {
 
     const sendDataWrapper = async () => {
       await sendData();
@@ -62,12 +79,19 @@ const UserRegistration = () => {
     // set the submitClicked state var to false once the action is performed so that when the button is clicked again the state turns to true
     }
 
+    else if(ethAddressExists){
+      console.log('User with this address already exists');
+      setSubmitClicked(false);
+      setIsValidAddress(false);
+      setEthAddressExists(false);
+    }
+
     else if(submitClicked && !isValidAddress) {
       // handles the case when the user enters an invalid address
       console.log('Invalid address');
       setSubmitClicked(false);
     }
-    
+
   }, [isValidAddress, submitClicked]);
   
 

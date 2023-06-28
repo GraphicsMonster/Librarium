@@ -296,6 +296,33 @@ app.get('/api/library/:LibId/users', async (req, res) => {
     // This route handles the case where we wanna retrieve the information we have about all the users.
 })
 
+app.get('/api/library/:lib_Id/users/checkaddress', async (req, res) => {
+    try {
+        const lib_Id = req.params.lib_Id;
+        const userAddress = req.query.address;
+
+        const libraryContractAddress = await libraryContractFactory.methods.getLibraryAddress(lib_Id).call();
+        const libraryContract = new web3.eth.Contract(libraryABI, libraryContractAddress);
+
+        const userContractAddress = await libraryContract.methods.getUserContractAddress().call();
+        const userContract = new web3.eth.Contract(userABI, userContractAddress);
+
+        const user = await userContract.methods.getUser(userAddress).call();
+
+        const parsedUser = {
+            name: user[0],
+            email: user[1],
+            bookBalance: user[2],
+            booksBorrowed: user[3],
+        }
+
+        res.json(parsedUser);
+    }
+    catch(error) {
+        console.log(error);
+    }
+})
+
 app.get('/api/library/:lib_Id/user/:user_Id', async (req, res) => {
     try {
         const lib_Id = req.params.lib_Id;
