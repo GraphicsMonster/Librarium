@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import './AllUsers.css'
 
 const AllUsers = () => {
     const {id} = useParams()
@@ -22,8 +23,8 @@ const AllUsers = () => {
         const response = await fetch(`http://localhost:3000/api/library/${id}/users`)
         const responseJson = await response.json()
         if (responseJson.length > 0) {
-            setUsersExist(true)
-            await fetchUsers()
+            setUsersExist(true);
+            await fetchUsers();
         }
     }
 
@@ -60,10 +61,31 @@ const AllUsers = () => {
     }
 
     return (
-        <div className='all-users'>
-            <p>Looks like this bloody works!!!</p>
+        <div className="all-users">
+          <h1>All Users</h1>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Book Balance</th>
+                <th>Borrowed Books</th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((user, index) => (
+                <tr key={index}>
+                  <td>{user.name}</td>
+                  <td>{user.email}</td>
+                  <td>{user.bookbalance}</td>
+                  <td>{user.borrowedBooks}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-    )
+      );
+      
 }
 
 export default AllUsers
