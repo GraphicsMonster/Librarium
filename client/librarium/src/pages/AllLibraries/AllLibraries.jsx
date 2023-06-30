@@ -61,18 +61,32 @@ const AllLibraries = () => {
     }
 
     return (
-        <div className="library-list">
-          {Lib_details.map((library) => (
-            <div key={library.id} className="library-card">
-              <h2 className="library-name">{library.name}</h2>
-              <div className="library-info">
-                <p className="library-location">Location: {library.location}</p>
-                <p className="library-email">Email: {library.email}</p>
-                <p className="library-phone">Contact No.: {library.phone}</p>
-                <p className="library-maxhold">Maximum No. of Holds allowed at a time: {library.maxhold}</p>
-              </div>
-            </div>
-          ))}
+        <div className="library-table">
+          <h2>List of all Libraries on the network</h2>
+          <table className="library-list">
+            <thead>
+              <tr>
+                <th>Serial No.</th>
+                <th>Library Name</th>
+                <th>Location</th>
+                <th>Email</th>
+                <th>Contact No.</th>
+                <th>Max No. of Holds</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Lib_details.map((library, index) => (
+                <tr key={library.id}>
+                  <td>{index + 1}</td>
+                  <td>{library.name}</td>
+                  <td>{library.location}</td>
+                  <td>{library.email}</td>
+                  <td>{library.phone}</td>
+                  <td>{library.maxhold}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       );
 }

@@ -83,6 +83,11 @@ const AllUsers = () => {
               ))}
             </tbody>
           </table>
+          <div className='allusers-footer'>
+            <p className='allusers-footer-text'>
+              <Link to={`/library/${id}/dashboard`}>Back to Library</Link>
+            </p>
+          </div>
         </div>
       );
       

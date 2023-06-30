@@ -1,42 +1,30 @@
+.library-table {
+  margin: 20px;
+}
+
 .library-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
-  .library-card {
-    width: 30vw;
-    margin: 20px;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 2);
-    background-color: #fff;
-  }
-  
-  .library-name {
-    font-size: 24px;
-    color: #333;
-    margin-bottom: 10px;
-  }
-  
-  .library-info {
-    margin-top: 20px;
-  }
-  
-  .library-location,
-  .library-email,
-  .library-phone,
-  .library-maxhold {
-    margin-bottom: 10px;
-  }
-  
-  .no-libraries {
-    text-align: center;
-    margin-top: 50px;
-  }
-  
-  .no-libraries h1 {
-    font-size: 24px;
-    color: #333;
-  }
-  
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.library-list th,
+.library-list td {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.library-list th {
+  background-color: #f8f8f8;
+  font-weight: bold;
+  text-align: left;
+}
+
+.no-libraries {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.no-libraries h1 {
+  font-size: 24px;
+  color: #666;
+}
