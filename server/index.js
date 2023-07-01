@@ -262,6 +262,37 @@ app.get('/api/library/:id/books', async (req, res) => {
     // Should get clearer while testing
 })
 
+app.get('/api/library/:id/inventorysize', async (req, res) => {
+    try {
+        const libraryId = req.params.id;
+
+        const totalLibraries = await libraryContractFactory.methods.getTotalLibraries().call();
+        // We are fetching the total number of libraries on the blockchain
+
+        if (libraryId > totalLibraries || libraryId < 0 || isNaN(libraryId)) {
+            res.status(400).json({ error: "Invalid library id" });
+            return;
+        }
+
+        const libraryAddress = await libraryContractFactory.methods.getLibraryAddress(libraryId).call();
+        const librarycontract = new web3.eth.Contract(libraryABI, libraryAddress);
+        //Fetching address and creating instance of library contract
+
+        const bookTokenContractAddress = await librarycontract.methods.getBookTokenAddress().call();
+        const bookTokenContract = new web3.eth.Contract(bookTokenABI, bookTokenContractAddress);
+        // Fetching address and creating instance of book token contract which is a part of the library contract
+
+        const books = await bookTokenContract.methods.getBooks().call();
+        //Fetching books from the blockchain. This function needs some work. I think something's wrong with it.
+
+        const totalBooks = books.length;
+        res.json({ totalBooks: totalBooks });
+    }
+    catch (error) {
+        res.status(500).json({ error: "Something went wrong while fetching inventory size" });
+    }
+})
+
 app.get('/api/library/:LibId/users', async (req, res) => {
     try {
         const lib_Id = req.params.LibId;
