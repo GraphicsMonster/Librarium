@@ -1,7 +1,53 @@
 import React from 'react'
+import { useState } from 'react';
 import "./ProfileCard.css"
 
-function ProfileCard() {
+function ProfileCard(props) {
+
+    const isItLibrary = props.isItLibrary;
+    // const [LibraryDetails, setLibraryDetails] = useState({})
+    // const [UserDetails, setUserDetails] = useState({})
+
+    if(isItLibrary) {
+
+        const libdetails = {
+            lib_id : props.libraryId,
+            lib_name : props.lib_name,
+            lib_email : props.email,
+            lib_inventory : props.inventory,
+            lib_users: props.totalUsers
+        }
+        
+        return (
+            <div className='profile-card'>
+                <div className='profile-card__header'>
+                    <div className='profile-card__header__avatar'></div>
+                    <div className='profile-card__header__name'>{libdetails.lib_name}</div>
+                </div>
+                <div className='profile-card__body'>
+                    <ul className='profile-body-elements'>
+                        <li className='profile-body-elements__username profile-row'>
+                            <div className='profile-body-elements__username__label'>Library ID</div>
+                            <div className='profile-body-elements__username__value'>{libdetails.lib_id}</div>
+                        </li>
+                        <li className='profile-body-elements__email profile-row'>
+                            <div className='profile-body-elements__email__label'>Email</div>
+                            <div className='profile-body-elements__email__value'>{libdetails.lib_email}</div>
+                        </li>
+                        <li className='profile-inventory-size profile-row'>
+                            <div className='profile-inventory-size__label'>Inventory Size</div>
+                            <div className='profile-inventory-size__value'>0</div>
+                        </li>
+                        <li className='profile-registered-users profile-row'>
+                            <div className='profile-registered-users__label'>Total registered users</div>
+                            <div className='profile-regsitered-users__value'>0</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        )
+    }
+
   return (
     <div className='profile-card'>
         <div className='profile-card__header'>
