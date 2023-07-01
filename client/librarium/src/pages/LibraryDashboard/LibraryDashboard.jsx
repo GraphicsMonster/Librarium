@@ -15,20 +15,24 @@ function LibraryDashboard() {
   useEffect(() => {
     const checkLibraryExists = async () => {
       const response = await fetch(`http://localhost:3000/api/library/${id}`);
+      const inventory = await fetch(`http://localhost:3000/api/library/${id}/inventorysize`);
       setLibraryExists(response.ok);
 
+      const inventoryjson = await inventory.json();
       const responseJson = await response.json();
       setLibraryDetails({
-        Id: responseJson.id,
+        Id: responseJson.libraryId,
         name: responseJson.name,
         email: responseJson.email,
-        inventory: 0,
+        inventory: inventoryjson.totalBooks,
         users: 0
       });
+      console.log(LibraryDetails.inventory);
+      console.log(LibraryDetails.name)
     };
 
     checkLibraryExists();
-  }, [id]);
+  }, [id, LibraryDetails.inventory, LibraryDetails.name]);
 
   if (!libraryExists) {
     return (
