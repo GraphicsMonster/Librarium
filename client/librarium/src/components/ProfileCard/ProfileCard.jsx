@@ -1,23 +1,27 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 import "./ProfileCard.css"
 
 function ProfileCard(props) {
 
     const isItLibrary = props.isItLibrary;
-    // const [LibraryDetails, setLibraryDetails] = useState({})
-    // const [UserDetails, setUserDetails] = useState({})
 
     if(isItLibrary) {
 
-        const libdetails = {
+        const [libdetails, setLibdetails] = useState({});
+
+        useEffect(() => {
+         setLibdetails({
             lib_id : props.libraryId,
             lib_name : props.lib_name,
             lib_email : props.email,
             lib_inventory : props.inventory,
             lib_users: props.totalUsers
-        }
-        
+         })
+        }, [props])
+
+        if(!libdetails.lib_inventory) return (<div>Loading...</div>)
+
         return (
             <div className='profile-card'>
                 <div className='profile-card__header'>
@@ -36,7 +40,7 @@ function ProfileCard(props) {
                         </li>
                         <li className='profile-inventory-size profile-row'>
                             <div className='profile-inventory-size__label'>Inventory Size</div>
-                            <div className='profile-inventory-size__value'>0</div>
+                            <div className='profile-inventory-size__value'>{libdetails.lib_inventory}</div>
                         </li>
                         <li className='profile-registered-users profile-row'>
                             <div className='profile-registered-users__label'>Total registered users</div>

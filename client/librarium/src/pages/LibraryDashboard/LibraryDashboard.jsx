@@ -13,26 +13,43 @@ function LibraryDashboard() {
   const [LibraryDetails, setLibraryDetails] = useState({});
 
   useEffect(() => {
-    const checkLibraryExists = async () => {
-      const response = await fetch(`http://localhost:3000/api/library/${id}`);
-      const inventory = await fetch(`http://localhost:3000/api/library/${id}/inventorysize`);
-      setLibraryExists(response.ok);
+    const fetchLibraryDetails = async () => {
+      try {
+        const [libraryResponse, inventoryResponse] = await Promise.all([
+          fetch(`http://localhost:3000/api/library/${id}`),
+          fetch(`http://localhost:3000/api/library/${id}/inventorysize`)
+        ]);
+  
+        if (!libraryResponse.ok || !inventoryResponse.ok) {
+          throw new Error('Failed to fetch library details');
+        }
+  
+        const [libraryData, inventoryData] = await Promise.all([
+          libraryResponse.json(),
+          inventoryResponse.json()
+        ]);
+  
+        setLibraryExists(true);
+        setLibraryDetails({
+          Id: libraryData.libraryId,
+          name: libraryData.name,
+          email: libraryData.email,
+          inventory: inventoryData.totalBooks,
+          users: 0
+        });
 
-      const inventoryjson = await inventory.json();
-      const responseJson = await response.json();
-      setLibraryDetails({
-        Id: responseJson.libraryId,
-        name: responseJson.name,
-        email: responseJson.email,
-        inventory: inventoryjson.totalBooks,
-        users: 0
-      });
-      console.log(LibraryDetails.inventory);
-      console.log(LibraryDetails.name)
+      } 
+      
+      catch (error) {
+        console.error('An error occurred while fetching library details:', error);
+        setLibraryExists(false);
+      }
+
     };
-
-    checkLibraryExists();
-  }, [id, LibraryDetails.inventory, LibraryDetails.name]);
+  
+    fetchLibraryDetails();
+  }, [id]);
+  
 
   if (!libraryExists) {
     return (
@@ -50,6 +67,7 @@ function LibraryDashboard() {
         </div>
         <div className='dashboard__content'>
           <ProfileCard
+            key={LibraryDetails.inventory}
             isItLibrary={true}
             libraryId={LibraryDetails.Id}
             lib_name={LibraryDetails.name}
