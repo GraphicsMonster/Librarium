@@ -15,18 +15,20 @@ function LibraryDashboard() {
   useEffect(() => {
     const fetchLibraryDetails = async () => {
       try {
-        const [libraryResponse, inventoryResponse] = await Promise.all([
+        const [libraryResponse, inventoryResponse, userCountData] = await Promise.all([
           fetch(`http://localhost:3000/api/library/${id}`),
-          fetch(`http://localhost:3000/api/library/${id}/inventorysize`)
+          fetch(`http://localhost:3000/api/library/${id}/inventorysize`),
+          fetch(`http://localhost:3000/api/library/${id}/users/count`)
         ]);
   
-        if (!libraryResponse.ok || !inventoryResponse.ok) {
+        if (!libraryResponse.ok || !inventoryResponse.ok || !userCountData.ok) {
           throw new Error('Failed to fetch library details');
         }
   
-        const [libraryData, inventoryData] = await Promise.all([
+        const [libraryData, inventoryData, userCount] = await Promise.all([
           libraryResponse.json(),
-          inventoryResponse.json()
+          inventoryResponse.json(),
+          userCountData.json()
         ]);
   
         setLibraryExists(true);
@@ -35,7 +37,7 @@ function LibraryDashboard() {
           name: libraryData.name,
           email: libraryData.email,
           inventory: inventoryData.totalBooks,
-          users: 0
+          totalUsers: userCount.totalUsers
         });
 
       } 
@@ -73,7 +75,7 @@ function LibraryDashboard() {
             lib_name={LibraryDetails.name}
             email={LibraryDetails.email}
             inventory={LibraryDetails.inventory}
-            users={LibraryDetails.users}
+            totalUsers={LibraryDetails.totalUsers}
           />
           <Inventory />
         </div>

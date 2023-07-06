@@ -44,7 +44,7 @@ function ProfileCard(props) {
                         </li>
                         <li className='profile-registered-users profile-row'>
                             <div className='profile-registered-users__label'>Total registered users</div>
-                            <div className='profile-regsitered-users__value'>0</div>
+                            <div className='profile-regsitered-users__value'>{libdetails.lib_users}</div>
                         </li>
                     </ul>
                 </div>

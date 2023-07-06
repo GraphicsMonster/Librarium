@@ -327,6 +327,26 @@ app.get('/api/library/:LibId/users', async (req, res) => {
     // This route handles the case where we wanna retrieve the information we have about all the users.
 })
 
+app.get('/api/library/:id/users/count', async(req, res) => {
+  try{
+    
+    const id = req.params.id;
+
+    const LibraryAddress = await libraryContractFactory.methods.getLibraryAddress(id).call();
+    const LibraryContract = new web3.eth.Contract(libraryABI, LibraryAddress);
+
+    const UserContractAddress = await LibraryContract.methods.getUserContractAddress().call();
+    const UserContract = new web3.eth.Contract(userABI, UserContractAddress);
+
+    const totalUsers = await UserContract.methods.totalUsers().call();
+
+    res.json({totalUsers: totalUsers});
+  }
+  catch(error){
+    res.status(500).json({error: "Something went wrong while fetching users count"});
+  }
+})
+
 app.get('/api/library/:lib_Id/users/checkaddress', async (req, res) => {
     try {
         const lib_Id = req.params.lib_Id;
