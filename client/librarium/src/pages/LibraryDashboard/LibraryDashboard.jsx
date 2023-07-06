@@ -65,7 +65,7 @@ function LibraryDashboard() {
     <>
       <div className='dashboard__container'>
         <div className='dashboard__sidebar'>
-          <Sidebar isItLibrary={isItLibrary} />
+          <Sidebar isItLibrary={isItLibrary} id={id} />
         </div>
         <div className='dashboard__content'>
           <ProfileCard

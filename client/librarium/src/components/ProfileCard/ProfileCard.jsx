@@ -20,7 +20,7 @@ function ProfileCard(props) {
          })
         }, [props])
 
-        if(!libdetails.lib_inventory) return (<div>Loading...</div>)
+        if(!libdetails) return (<div>Loading...</div>)
 
         return (
             <div className='profile-card'>
