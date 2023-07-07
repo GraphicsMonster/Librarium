@@ -1,4 +1,3 @@
-/* BookCard.css */
 .book-card {
   background-color: #ffffff;
   border-radius: 10px;
@@ -22,6 +21,7 @@
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 10px;
+  color: #333;
 }
 
 .book-card__description {

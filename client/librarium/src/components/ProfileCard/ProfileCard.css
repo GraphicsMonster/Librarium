@@ -1,29 +1,80 @@
 .profile-card {
-  width: 50vw;
+  width: 500px;
   margin: 1rem auto;
-  padding: 1rem;
-  background-color: #f5f5f5;
-  border-radius: 15px;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  padding: 1.5rem;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   font-family: "Martian Mono", monospace;
 }
 
-.profile-card-body ul li {
-  text-decoration: none;
-  list-style: none;
+.profile-card.library-profile {
+  background-color: #f5f5f5;
 }
 
-ul {
-  padding-inline-start: 0;
+.profile-card.user-profile {
+  background-color: #fff;
+}
+
+.profile-card__header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.profile-card__header__avatar {
+  width: 60px;
+  height: 60px;
+  background-color: #ccc;
+  border-radius: 50%;
+}
+
+.profile-card__header__name {
+  margin-left: 1rem;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.profile-card__body {
+  padding: 0;
+}
+
+.profile-body-elements {
   list-style-type: none;
-}
-li {
-  text-align: center;
+  padding: 0;
+  margin: 0;
 }
 
-.profile-row {
+.profile-body-elements__item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
+  padding: 1rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.profile-body-elements__item:last-child {
+  border-bottom: none;
+}
+
+.profile-body-elements__label {
+  font-weight: bold;
+}
+
+.profile-body-elements__value {
+  color: #777;
+}
+
+/* Additional styling for library profile */
+.library-profile .profile-card__header {
+  background-color: #ddd;
+}
+
+.library-profile .profile-body-elements__item:nth-child(even) {
+  background-color: #f5f5f5;
+}
+
+/* Additional styling for user profile */
+.user-profile .profile-body-elements__item:nth-child(even) {
+  background-color: #f5f5f5;
 }
